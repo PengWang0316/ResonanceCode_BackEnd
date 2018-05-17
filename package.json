@@ -6,6 +6,11 @@
   "scripts": {
     "test": "jest"
   },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
   "keywords": [
     "NodeJS",
     "back-end"

@@ -1,17 +1,17 @@
-import putHexagram from '../../../NodeJsFiles/routers/functions/PutHexagram';
+import putHexagram from '../../src/routers/functions/PutHexagram';
 
-// jest.mock('dotenv', () => ({ config: jest.fn() }));
-jest.mock('../../../NodeJsFiles/utils/Logger', () => ({ error: jest.fn() }));
-jest.mock('../../../NodeJsFiles/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id' }));
-jest.mock('../../../NodeJsFiles/MongoDB', () => ({ updateHexagram: jest.fn().mockReturnValue(Promise.resolve()) }));
+jest.mock('dotenv', () => ({ config: jest.fn() }));
+jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
+jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id' }));
+jest.mock('../../src/MongoDB', () => ({ updateHexagram: jest.fn().mockReturnValue(Promise.resolve()) }));
 
 describe('PostJournal', () => {
   test('updateHexagram without error', async () => {
     const mockEndFn = jest.fn();
     const res = { sendStatus: jest.fn().mockReturnValue({ end: mockEndFn }) };
     const req = { body: { jwtMessage: 'message', journal: { id: 'journalId' } } };
-    const verifyJWT = require('../../../NodeJsFiles/utils/VerifyJWT');
-    const { updateHexagram } = require('../../../NodeJsFiles/MongoDB');
+    const verifyJWT = require('../../src/utils/VerifyJWT');
+    const { updateHexagram } = require('../../src/MongoDB');
 
     await putHexagram(req, res);
 
@@ -25,9 +25,9 @@ describe('PostJournal', () => {
     const mockEndFn = jest.fn();
     const res = { sendStatus: jest.fn().mockReturnValue({ end: mockEndFn }) };
     const req = { body: { jwtMessage: 'message', journal: { id: 'journalId' } } };
-    const verifyJWT = require('../../../NodeJsFiles/utils/VerifyJWT');
-    const { updateHexagram } = require('../../../NodeJsFiles/MongoDB');
-    const { error } = require('../../../NodeJsFiles/utils/Logger');
+    const verifyJWT = require('../../src/utils/VerifyJWT');
+    const { updateHexagram } = require('../../src/MongoDB');
+    const { error } = require('../../src/utils/Logger');
     updateHexagram.mockReturnValue(Promise.reject());
 
     await putHexagram(req, res);

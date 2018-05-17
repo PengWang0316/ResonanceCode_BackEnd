@@ -1,16 +1,16 @@
-import postJournal from '../../../NodeJsFiles/routers/functions/PostJournal';
+import postJournal from '../../src/routers/functions/PostJournal';
 
-jest.mock('../../../NodeJsFiles/utils/Logger', () => ({ error: jest.fn() }));
-jest.mock('../../../NodeJsFiles/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id' }));
-jest.mock('../../../NodeJsFiles/MongoDB', () => ({ createJournal: jest.fn().mockReturnValue(Promise.resolve()) }));
+jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
+jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id' }));
+jest.mock('../../src/MongoDB', () => ({ createJournal: jest.fn().mockReturnValue(Promise.resolve()) }));
 
 describe('PostJournal', () => {
   test('createJournal without error', async () => {
     const mockEndFn = jest.fn();
     const res = { sendStatus: jest.fn().mockReturnValue({ end: mockEndFn }) };
     const req = { body: { jwtMessage: 'message', journal: { id: 'journalId' } } };
-    const verifyJWT = require('../../../NodeJsFiles/utils/VerifyJWT');
-    const { createJournal } = require('../../../NodeJsFiles/MongoDB');
+    const verifyJWT = require('../../src/utils/VerifyJWT');
+    const { createJournal } = require('../../src/MongoDB');
 
     await postJournal(req, res);
 
@@ -24,9 +24,9 @@ describe('PostJournal', () => {
     const mockEndFn = jest.fn();
     const res = { sendStatus: jest.fn().mockReturnValue({ end: mockEndFn }) };
     const req = { body: { jwtMessage: 'message', journal: { id: 'journalId' } } };
-    const verifyJWT = require('../../../NodeJsFiles/utils/VerifyJWT');
-    const { createJournal } = require('../../../NodeJsFiles/MongoDB');
-    const { error } = require('../../../NodeJsFiles/utils/Logger');
+    const verifyJWT = require('../../src/utils/VerifyJWT');
+    const { createJournal } = require('../../src/MongoDB');
+    const { error } = require('../../src/utils/Logger');
     createJournal.mockReturnValue(Promise.reject());
 
     await postJournal(req, res);
