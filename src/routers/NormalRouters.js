@@ -45,78 +45,6 @@ cloudinary.config({ // confige the cloudinary library.
 //   process.env.APPLICATION_SERVER_PRIVATE_KEY
 // );
 
-/** Setting up the Winston logger.
-  * Under the development mode log to console.
-*/
-// const logger = new winston.Logger({
-//   level: process.env.LOGGING_LEVEL,
-//   transports: [
-//     new (winston.transports.Console)()
-//   ]
-// });
-
-/** Replaces the previous transports with those in the
-new configuration wholesale.
-  * When under the production mode, log to a file.
-*/
-// if (process.env.NODE_ENV === 'production')
-//   logger.configure({
-//     level: 'error',
-//     transports: [
-//       new (winston.transports.File)({ filename: 'error.log' })
-//     ]
-//   });
-
-/** Verify and return user object from jwt message      Moved out to the utils
- * @param { object } object includes jwt message and response
- * @return { object } return the user object that was verified by jsonwebtoken
- */
-// const verifyJWT = ({ message, res }) => {
-//   try {
-//     res.status(200);
-//     return jwt.verify(message, process.env.JWT_SECERT);
-//   } catch (e) {
-//     res.status(200);
-//     res.json({ isAuth: false });
-//     return null;
-//   }
-// };
-
-/** *********************************************************************
-************* using to solve Access-Control-Allow-Origin  **************
-************ Also check the authentication  **************
-********************************************************************** */
-/* Do not use yet.
-normalRouter.post('/resonancecode/api/v1/*', (req, res, next) => {
-  if (req.body && req.body.auth && req.body.auth.un && req.body.auth.pd) {
-    if (req.body.auth.un === USERNAME &&
-      req.body.auth.pd === PASSWORD) next();
-    else res.send('Unauthenticated call!');
-  } else res.send('Unauthenticated call!');
-});
-
-normalRouter.put('/resonancecode/api/v1/*', (req, res, next) => {
-  if (req.body && req.body.auth && req.body.auth.un && req.body.auth.pd) {
-    if (req.body.auth.un === USERNAME &&
-      req.body.auth.pd === PASSWORD) next();
-    else res.send('Unauthenticated call!');
-  } else res.send('Unauthenticated call!');
-});
-
-normalRouter.get('/resonancecode/api/v1/*', (req, res, next) => {
-  // logger.error(req);
-  if ((req.query.un && req.query.pd &&
-    req.query.un === USERNAME && req.query.pd === PASSWORD)) next();
-  else res.send('Unauthenticated call!');
-});
-normalRouter.delete('/resonancecode/api/v1/*', (req, res, next) => {
-  // logger.error(req.query);
-  if (req.query.un && req.query.pd &&
-    req.query.un === USERNAME && req.query.pd === PASSWORD) next();
-  else res.send('Unauthenticated call!');
-});
-*/
-
 // /*********  index page  ************/
 // normalRouter.get("/",function(req,res){
 //   res.sendFile(path.resolve(__dirname+"/dist/index.html"));
@@ -140,68 +68,6 @@ normalRouter.put('/hexagram', putHexagram);
 /** fetch readings */
 normalRouter.get('/fetchReadings', getFetchReadings);
 
-/** ***************  Fetching hexagrams data  ********************************** */
-// Not use anymore
-// normalRouter.get('/hexagram', (req, res) => {
-//   mongodb.getHexagram(req.query.img_arr, (result) => {
-//     // logger.error(result);
-//     res.send(result);
-//   });
-// });
-
-/** Fetching line grams data from readings */
-// Not use anymore
-// normalRouter.get('/fetchLinesBigrams', (req, res) => {
-//   const imageInformationObject = { 1: [], 2: [] };
-//   mongodb.fetchLine13Bigram(req.query.line_13_id_1)
-//     .then(results13a => {
-//       const result13a = Object.assign({ title: 'Particle Bigram' }, results13a[0] || {}); // handle no match. In final version, everyone should match one.
-//       imageInformationObject['1'].push(result13a);
-//       mongodb.fetchLine13Bigram(req.query.line_13_id_2)
-//         .then(results13b => {
-//           const result13b = Object.assign({ title: 'Particle Bigram' }, results13b[0] || {}); // handle no match. In final version, everyone should match one.
-//           imageInformationObject['2'].push(result13b);
-//           mongodb.fetchLine25Bigram(req.query.line_25_id_1)
-//             .then(results25a => {
-//               const result25a = Object.assign({ title: 'Resonance Bigram' }, results25a[0] || {}); // handle no match. In final version, everyone should match one.
-//               imageInformationObject['1'].push(result25a);
-//               mongodb.fetchLine25Bigram(req.query.line_25_id_2)
-//                 .then(results25b => {
-//                   const result25b = Object.assign({ title: 'Resonance Bigram' }, results25b[0] || {}); // handle no match. In final version, everyone should match one.
-//                   imageInformationObject['2'].push(result25b);
-//                   mongodb.fetchLine46Bigram(req.query.line_46_id_1)
-//                     .then(results46a => {
-//                       const result46a = Object.assign({ title: 'Wave Bigram' }, results46a[0] || {}); // handle no match. In final version, everyone should match one.
-//                       imageInformationObject['1'].push(result46a);
-//                       mongodb.fetchLine46Bigram(req.query.line_46_id_2)
-//                         .then(results46b => {
-//                           const result46b = Object.assign({ title: 'Wave Bigram' }, results46b[0] || {}); // handle no match. In final version, everyone should match one.
-//                           imageInformationObject['2'].push(result46b);
-//                           res.json(imageInformationObject);
-//                         });
-//                     });
-//                 });
-//             });
-//         });
-//     });
-// });
-
-/* Not use anymore
-normalRouter.get('/getLinesForHexagram', (req, res) => {
-  const queryObject = [{
-    line_13_id: req.query.line_13_id_1,
-    line_25_id: req.query.line_25_id_1,
-    line_46_id: req.query.line_46_id_1
-  },
-  {
-    line_13_id: req.query.line_13_id_2,
-    line_25_id: req.query.line_25_id_2,
-    line_46_id: req.query.line_46_id_2
-  }];
-  mongodb.getLinesBigrams(queryObject, result => res.send(result));
-});
-*/
-
 /* Getting journals list */
 normalRouter.get('/fetchJournals', (req, res) => {
   const user = verifyJWT({ message: req.query.jwtMessage, res });
@@ -215,16 +81,6 @@ normalRouter.get('/fetchJournals', (req, res) => {
   }).catch(err => logger.error('/fetchJournals', err));
 });
 
-/* Deprecated old version
-normalRouter.get("/getJournals",(req, res)=>{
-  let queryObject={readingId: req.query.readingId, userId: req.query.userId};
-  mongodb.getJournalList(queryObject, (result)=>{
-    // logger.error(result.journal_entries);
-    res.send(result);
-  });
-});
-*/
-
 /** Getting unattached journals list */
 normalRouter.get('/fetchUnattachedJournals', (req, res) => {
   const user = verifyJWT({ message: req.query.jwtMessage, res });
@@ -234,15 +90,6 @@ normalRouter.get('/fetchUnattachedJournals', (req, res) => {
     // res.json(result);
   });
 });
-
-/* Deprecated old version
-normalRouter.get("/getUnattachedJournals",(req, res)=>{
-  // let queryObject={userId: req.query.userId};
-  mongodb.getUnattachedJournalList(req.query.userId, (result)=>{
-    // logger.error(result.journal_entries);
-    res.send(result);
-  });
-}); */
 
 /** *************  Getting one journal  ******************** */
 normalRouter.get('/journal', (req, res) => {
@@ -263,15 +110,6 @@ normalRouter.get('/journalBasedOnJournalReading', (req, res) => {
   }).then(result => res.json(result)).catch(err => logger.error('/journalBasedOnJournalReading', err));
 });
 
-/** Deprecated old version.
- *************  Getting one unattached journal from journal_entries collection  ********************
-normalRouter.get('/getUnattachedJournal', (req, res) => {
-  mongodb.getUnattachedJournal(req.query.journalId, (result) => {
-    // logger.error(result);
-    res.send(result);
-  });
-});
-*/
 /** *************  Getting hexagrams  ******************** */
 normalRouter.get('/fetchHexagrams', (req, res) => {
   mongodb.getHexagrams(req.query).then(result => res.json(result));
@@ -495,14 +333,6 @@ normalRouter.put('/turnOffPushSubscription', (req, res) => {
     .then(result => res.json(getReturnUserObject(result.value)))
     .catch(err => logger.error('/turnOffPushSubscription', err));
 });
-
-/* Fetching the reading based on a giving reading id */
-// normalRouter.get('/fetchReadingBasedOnId', (req, res) => {
-//   const user = verifyJWT({ message: req.query.jwtMessage, res });
-//   mongodb.fetchReadingBasedOnId({ readingId: req.query.readingId, userId: user._id })
-//     .then(reading => res.json(reading))
-//     .catch(err => logger.error('/fetchReadingBasedOnId', err));
-// });
 
 /** Assemble the docDefinition for the pdfmake.
   * @param {object} the param includes readingDataUrl (the reading's dataurl that comes from html2canvas) and a journal array that comes from database.
