@@ -141,49 +141,52 @@ normalRouter.put('/hexagram', putHexagram);
 normalRouter.get('/fetchReadings', getFetchReadings);
 
 /** ***************  Fetching hexagrams data  ********************************** */
-normalRouter.get('/hexagram', (req, res) => {
-  mongodb.getHexagram(req.query.img_arr, (result) => {
-    // logger.error(result);
-    res.send(result);
-  });
-});
+// Not use anymore
+// normalRouter.get('/hexagram', (req, res) => {
+//   mongodb.getHexagram(req.query.img_arr, (result) => {
+//     // logger.error(result);
+//     res.send(result);
+//   });
+// });
 
 /** Fetching line grams data from readings */
-normalRouter.get('/fetchLinesBigrams', (req, res) => {
-  const imageInformationObject = { 1: [], 2: [] };
-  mongodb.fetchLine13Bigram(req.query.line_13_id_1)
-    .then(results13a => {
-      const result13a = Object.assign({ title: 'Particle Bigram' }, results13a[0] || {}); // handle no match. In final version, everyone should match one.
-      imageInformationObject['1'].push(result13a);
-      mongodb.fetchLine13Bigram(req.query.line_13_id_2)
-        .then(results13b => {
-          const result13b = Object.assign({ title: 'Particle Bigram' }, results13b[0] || {}); // handle no match. In final version, everyone should match one.
-          imageInformationObject['2'].push(result13b);
-          mongodb.fetchLine25Bigram(req.query.line_25_id_1)
-            .then(results25a => {
-              const result25a = Object.assign({ title: 'Resonance Bigram' }, results25a[0] || {}); // handle no match. In final version, everyone should match one.
-              imageInformationObject['1'].push(result25a);
-              mongodb.fetchLine25Bigram(req.query.line_25_id_2)
-                .then(results25b => {
-                  const result25b = Object.assign({ title: 'Resonance Bigram' }, results25b[0] || {}); // handle no match. In final version, everyone should match one.
-                  imageInformationObject['2'].push(result25b);
-                  mongodb.fetchLine46Bigram(req.query.line_46_id_1)
-                    .then(results46a => {
-                      const result46a = Object.assign({ title: 'Wave Bigram' }, results46a[0] || {}); // handle no match. In final version, everyone should match one.
-                      imageInformationObject['1'].push(result46a);
-                      mongodb.fetchLine46Bigram(req.query.line_46_id_2)
-                        .then(results46b => {
-                          const result46b = Object.assign({ title: 'Wave Bigram' }, results46b[0] || {}); // handle no match. In final version, everyone should match one.
-                          imageInformationObject['2'].push(result46b);
-                          res.json(imageInformationObject);
-                        });
-                    });
-                });
-            });
-        });
-    });
-});
+// Not use anymore
+// normalRouter.get('/fetchLinesBigrams', (req, res) => {
+//   const imageInformationObject = { 1: [], 2: [] };
+//   mongodb.fetchLine13Bigram(req.query.line_13_id_1)
+//     .then(results13a => {
+//       const result13a = Object.assign({ title: 'Particle Bigram' }, results13a[0] || {}); // handle no match. In final version, everyone should match one.
+//       imageInformationObject['1'].push(result13a);
+//       mongodb.fetchLine13Bigram(req.query.line_13_id_2)
+//         .then(results13b => {
+//           const result13b = Object.assign({ title: 'Particle Bigram' }, results13b[0] || {}); // handle no match. In final version, everyone should match one.
+//           imageInformationObject['2'].push(result13b);
+//           mongodb.fetchLine25Bigram(req.query.line_25_id_1)
+//             .then(results25a => {
+//               const result25a = Object.assign({ title: 'Resonance Bigram' }, results25a[0] || {}); // handle no match. In final version, everyone should match one.
+//               imageInformationObject['1'].push(result25a);
+//               mongodb.fetchLine25Bigram(req.query.line_25_id_2)
+//                 .then(results25b => {
+//                   const result25b = Object.assign({ title: 'Resonance Bigram' }, results25b[0] || {}); // handle no match. In final version, everyone should match one.
+//                   imageInformationObject['2'].push(result25b);
+//                   mongodb.fetchLine46Bigram(req.query.line_46_id_1)
+//                     .then(results46a => {
+//                       const result46a = Object.assign({ title: 'Wave Bigram' }, results46a[0] || {}); // handle no match. In final version, everyone should match one.
+//                       imageInformationObject['1'].push(result46a);
+//                       mongodb.fetchLine46Bigram(req.query.line_46_id_2)
+//                         .then(results46b => {
+//                           const result46b = Object.assign({ title: 'Wave Bigram' }, results46b[0] || {}); // handle no match. In final version, everyone should match one.
+//                           imageInformationObject['2'].push(result46b);
+//                           res.json(imageInformationObject);
+//                         });
+//                     });
+//                 });
+//             });
+//         });
+//     });
+// });
 
+/* Not use anymore
 normalRouter.get('/getLinesForHexagram', (req, res) => {
   const queryObject = [{
     line_13_id: req.query.line_13_id_1,
@@ -195,12 +198,9 @@ normalRouter.get('/getLinesForHexagram', (req, res) => {
     line_25_id: req.query.line_25_id_2,
     line_46_id: req.query.line_46_id_2
   }];
-  // logger.error("****************",queryObject);
-  mongodb.getLinesBigrams(queryObject, (result) => {
-    // logger.error(result);
-    res.send(result);
-  });
+  mongodb.getLinesBigrams(queryObject, result => res.send(result));
 });
+*/
 
 /* Getting journals list */
 normalRouter.get('/fetchJournals', (req, res) => {

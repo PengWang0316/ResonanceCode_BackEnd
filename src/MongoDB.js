@@ -317,21 +317,25 @@ exports.fetchHexagram = imgArray => new Promise((resolve, reject) => {
 });
 
 /* Fetch lines bigram */
-exports.fetchLine13Bigram = lineId => promiseFindResult(db =>
-  db.collection(COLLECTION_LINE_13)
-    .find({ _id: new mongodb.ObjectId(lineId) }));
-exports.fetchLine25Bigram = lineId => promiseFindResult(db =>
-  db.collection(COLLECTION_LINE_25)
-    .find({ _id: new mongodb.ObjectId(lineId) }));
-exports.fetchLine46Bigram = lineId => promiseFindResult(db =>
-  db.collection(COLLECTION_LINE_46)
-    .find({ _id: new mongodb.ObjectId(lineId) }));
+// Not use anymore
+// exports.fetchLine13Bigram = lineId => promiseFindResult(db =>
+//   db.collection(COLLECTION_LINE_13)
+//     .find({ _id: new mongodb.ObjectId(lineId) }));
+// exports.fetchLine25Bigram = lineId => promiseFindResult(db =>
+//   db.collection(COLLECTION_LINE_25)
+//     .find({ _id: new mongodb.ObjectId(lineId) }));
+// exports.fetchLine46Bigram = lineId => promiseFindResult(db =>
+//   db.collection(COLLECTION_LINE_46)
+//     .find({ _id: new mongodb.ObjectId(lineId) }));
 
 /* Working with getLinesBigrams method below */
+/* Not use anymore
 const checkAndCallback = (imageInformationObject, callback) => {
   if (imageInformationObject['1'].length === 3 && imageInformationObject['2'].length === 3) callback(imageInformationObject);
 };
+*/
 /* Get all line grams data */
+/* Not use anymore
 exports.getLinesBigrams = (queryObject, callback) => {
   const imageInformationObject = { 1: [], 2: [] };
   connectToDb(db => {
@@ -377,7 +381,7 @@ exports.getLinesBigrams = (queryObject, callback) => {
       });
   });
 };
-
+*/
 
 /*  Delete reading  */
 exports.deleteReading = ({ readingId, userId }) => promiseInsertResult(db =>
