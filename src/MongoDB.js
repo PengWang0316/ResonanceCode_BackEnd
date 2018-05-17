@@ -205,19 +205,20 @@ const findHexagramImages = (readings, callback) => {
 };
 
 /*  Get readings  */
-exports.getRecentReadings = (pageNumber, numberPerpage, userId, callback) => {
-  connectToDb(db => {
-    db.collection(COLLECTION_READINGS)
-      .find(userId ? { user_id: userId } : {})
-      .sort({ date: -1 }).limit(numberPerpage * 1)
-      .skip(pageNumber * numberPerpage)
-      .toArray((err, result) => {
-        if (err) logger.error('Something goes worry: ', err);
-        if (result.length !== 0) findHexagramImages(result, callback);
-        else callback(result);
-      });
+exports.getRecentReadings = (pageNumber, numberPerpage, userId) =>
+  new Promise((resolve, reject) => {
+    connectToDb(db => {
+      db.collection(COLLECTION_READINGS)
+        .find(userId ? { user_id: userId } : {})
+        .sort({ date: -1 }).limit(numberPerpage * 1)
+        .skip(pageNumber * numberPerpage)
+        .toArray((err, result) => {
+          if (err) logger.error('Something goes worry: ', err);
+          if (result.length !== 0) findHexagramImages(result, backResult => resolve(backResult));
+          else resolve(result);
+        });
+    });
   });
-};
 
 /** Working with method below to search readings based on the hexagram.
   * @param {object} query is an object that has reading's information that a user wants to search.

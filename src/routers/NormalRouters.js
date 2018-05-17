@@ -24,7 +24,8 @@ const getJwtMessageVerify = require('./functions/GetJwtMessageVerify');
 const postReading = require('./functions/PostReading');
 const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
-const putHexagram = require('./functions/putHexagram');
+const putHexagram = require('./functions/PutHexagram');
+const getFetchReadings = require('./functions/GetFetchReadings');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -137,17 +138,7 @@ normalRouter.put('/journal', putJournal);
 normalRouter.put('/hexagram', putHexagram);
 
 /** fetch readings */
-normalRouter.get('/fetchReadings', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwt, res });
-  if (!user._id || !user.role) res.end('Invalid User.');
-  else
-    mongodb.getRecentReadings(
-      req.query.pageNumber,
-      req.query.numberPerpage,
-      user.role * 1 === ADMINISTRATOR_ROLE ? null : user._id,
-      result => res.json(result)
-    );
-});
+normalRouter.get('/fetchReadings', getFetchReadings);
 
 /** ***************  Fetching hexagrams data  ********************************** */
 normalRouter.get('/hexagram', (req, res) => {
