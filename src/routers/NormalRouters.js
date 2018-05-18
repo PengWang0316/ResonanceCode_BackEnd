@@ -26,6 +26,7 @@ const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
 const getFetchReadings = require('./functions/GetFetchReadings');
+const getFetchJournals = require('./functions/GetFetchJournals');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -69,17 +70,7 @@ normalRouter.put('/hexagram', putHexagram);
 normalRouter.get('/fetchReadings', getFetchReadings);
 
 /* Getting journals list */
-normalRouter.get('/fetchJournals', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  const queryObject = {
-    readingId: req.query.readingId,
-    userId: user.role * 1 === ADMINISTRATOR_ROLE ? null : user._id
-  };
-  mongodb.getJournalList(queryObject).then(result => {
-    res.json(result[0].journal_entries
-      .sort((previous, next) => new Date(next.date).getTime() - new Date(previous.date).getTime()));
-  }).catch(err => logger.error('/fetchJournals', err));
-});
+normalRouter.get('/fetchJournals', getFetchJournals);
 
 /** Getting unattached journals list */
 normalRouter.get('/fetchUnattachedJournals', (req, res) => {
