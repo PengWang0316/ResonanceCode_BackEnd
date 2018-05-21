@@ -285,9 +285,7 @@ exports.fetchAllReadingList = ({ userId, pageNumber, numberPerpage }) => promise
     .sort({ date: -1 }));
 
 /*  Get search readings  */
-exports.getSearchReadings = (query, callback) => {
-  // if user search bgetSearchReadingsased on hexagrams' criterias, search hexagrams' img_arr first.
-  logger.info('getSearchReadings => query:', query);
+exports.getSearchReadings = query => new Promise((resolve, reject) => {
   if (query.upperId !== 0 || query.lowerId !== 0 ||
     query.line13Id !== 0 || query.line25Id !== 0 || query.line46Id !== 0) {
     const queryObject = {};
@@ -299,12 +297,32 @@ exports.getSearchReadings = (query, callback) => {
     connectToDb(db => {
       db.collection(COLLECTION_HEXAGRAMS)
         .find(queryObject, { _id: 0, img_arr: 1 }).toArray((err, results) => {
-          searchForReadings(query, callback, results);
+          searchForReadings(query, result => resolve(result), results);
         });
     });
   } else
-    searchForReadings(query, callback);
-};
+    searchForReadings(query, result => resolve(result));
+});
+// (query, callback) => {
+//   // if user search bgetSearchReadingsased on hexagrams' criterias, search hexagrams' img_arr first.
+//   // logger.info('getSearchReadings => query:', query);
+//   if (query.upperId !== 0 || query.lowerId !== 0 ||
+//     query.line13Id !== 0 || query.line25Id !== 0 || query.line46Id !== 0) {
+//     const queryObject = {};
+//     if (query.upperId !== 0) queryObject.upper_trigrams_id = new mongodb.ObjectId(query.upperId);
+//     if (query.lowerId !== 0) queryObject.lower_trigrams_id = new mongodb.ObjectId(query.lowerId);
+//     if (query.line13Id !== 0) queryObject.line_13_id = new mongodb.ObjectId(query.line13Id);
+//     if (query.line25Id !== 0) queryObject.line_25_id = new mongodb.ObjectId(query.line25Id);
+//     if (query.line46Id !== 0) queryObject.line_46_id = new mongodb.ObjectId(query.line46Id);
+//     connectToDb(db => {
+//       db.collection(COLLECTION_HEXAGRAMS)
+//         .find(queryObject, { _id: 0, img_arr: 1 }).toArray((err, results) => {
+//           searchForReadings(query, callback, results);
+//         });
+//     });
+//   } else
+//     searchForReadings(query, callback);
+// };
 
 /*  Fetching hexagram  */
 exports.fetchHexagram = imgArray => new Promise((resolve, reject) => {
