@@ -30,6 +30,7 @@ const getFetchJournals = require('./functions/GetFetchJournals');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
 const getJournal = require('./functions/GetJournal');
 const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
+const getFetchAllHexagrams = require('./functions/GetFetchAllHexagrams');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -90,12 +91,7 @@ normalRouter.get('/fetchHexagrams', (req, res) => {
 });
 
 /** *************  Getting all hexagrams  ******************** */
-normalRouter.get('/fetchAllHexagrams', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  if (user.role === ADMINISTRATOR_ROLE)
-    mongodb.getHexagrams({}).then(result => res.json(result));
-  else res.status(401).end('Unauthenticated User');
-});
+normalRouter.get('/fetchAllHexagrams', getFetchAllHexagrams);
 
 /** Fetching one hexagram */
 normalRouter.get('/fetchHexagramBasedOnImg', (req, res) => {
