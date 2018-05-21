@@ -39,6 +39,7 @@ const getFetchAllReadingList = require('./functions/GetFetchAllReadingList');
 const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOnName');
 const deleteDeleteReading = require('./functions/DeleteDeleteReading');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
+const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattachedJournal');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -121,11 +122,7 @@ normalRouter.delete('/deleteReading', deleteDeleteReading);
 normalRouter.post('/deleteJournal', postDeleteJournal);
 
 /** Delete one unattached journal */
-normalRouter.delete('/deleteUnAttachedJournal', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  mongodb.deleteUnattachedJournal({ journalId: req.query.journalId, userId: user._id })
-    .then(_ => res.end());
-});
+normalRouter.delete('/deleteUnAttachedJournal', deleteDeleteUnattachedJournal);
 
 /** Check whether user name is available */
 normalRouter.get('/isUserNameAvailable', (req, res) => {
