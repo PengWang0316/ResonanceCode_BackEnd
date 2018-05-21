@@ -36,6 +36,7 @@ const getFetchHexagramBasedOnImg = require('./functions/GetFetchHexagramBasedOnI
 const getFetchReadingsBaseOnHexagram = require('./functions/GetFetchReadingsBaseOnHexagram');
 const getSearchReadings = require('./functions/GetSearchReadings');
 const getFetchAllReadingList = require('./functions/GetFetchAllReadingList');
+const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOnName');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -109,11 +110,7 @@ normalRouter.get('/searchReadings', getSearchReadings);
 normalRouter.get('/fetchAllReadingList', getFetchAllReadingList);
 
 /** ****************  Getting reading by searching name   ********************* */
-normalRouter.get('/fetchReadingsBasedOnName', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  mongodb.fetchReadingsBaseOnName({ user_id: user._id, keyWord: req.query.keyWord })
-    .then(result => res.json(result));
-});
+normalRouter.get('/fetchReadingsBasedOnName', getFetchReadingsBasedOnName);
 
 /** ***************  Delete reading  ***************************** */
 normalRouter.delete('/deleteReading', (req, res) => {
