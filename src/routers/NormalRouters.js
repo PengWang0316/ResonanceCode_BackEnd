@@ -32,6 +32,7 @@ const getJournal = require('./functions/GetJournal');
 const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
 const getFetchAllHexagrams = require('./functions/GetFetchAllHexagrams');
 const getFetchHexagrams = require('./functions/GetFetchHexagrams');
+const getFetchHexagramBasedOnImg = require('./functions/GetFetchHexagramBasedOnImg');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -93,9 +94,7 @@ normalRouter.get('/fetchHexagrams', getFetchHexagrams);
 normalRouter.get('/fetchAllHexagrams', getFetchAllHexagrams);
 
 /** Fetching one hexagram */
-normalRouter.get('/fetchHexagramBasedOnImg', (req, res) => {
-  mongodb.fetchHexagram(req.query.imgArray).then(result => res.json(result));
-});
+normalRouter.get('/fetchHexagramBasedOnImg', getFetchHexagramBasedOnImg);
 
 /** *************  Getting readings by hexagram's id  ******************** */
 normalRouter.get('/fetchReadingsBaseOnHexagram', (req, res) => {
