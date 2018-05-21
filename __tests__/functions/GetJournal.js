@@ -40,7 +40,7 @@ describe('GetJournal', () => {
     expect(mockJsonFn).toHaveBeenCalledTimes(1);
   });
 
-  test('getJournal attached journal without error', async () => {
+  test('getJournal attached journal with error', async () => {
     const mockJsonFn = jest.fn();
     const res = { json: mockJsonFn };
     const req = { query: { jwtMessage: 'message', journalId: 'journalId', isUnattachedJournal: false } };
