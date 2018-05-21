@@ -29,6 +29,7 @@ const getFetchReadings = require('./functions/GetFetchReadings');
 const getFetchJournals = require('./functions/GetFetchJournals');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
 const getJournal = require('./functions/GetJournal');
+const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -81,12 +82,7 @@ normalRouter.get('/fetchUnattachedJournals', getFetchUnattchedJournals);
 normalRouter.get('/journal', getJournal);
 
 /** Fetch a journal based on both reading and journal's id */
-normalRouter.get('/journalBasedOnJournalReading', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  mongodb.fetchJournalBasedOnReadingJournal({
-    readingId: req.query.readingId, journalId: req.query.journalId, userId: user._id
-  }).then(result => res.json(result)).catch(err => logger.error('/journalBasedOnJournalReading', err));
-});
+normalRouter.get('/journalBasedOnJournalReading', getJournalBaseOnJournalReading);
 
 /** *************  Getting hexagrams  ******************** */
 normalRouter.get('/fetchHexagrams', (req, res) => {
