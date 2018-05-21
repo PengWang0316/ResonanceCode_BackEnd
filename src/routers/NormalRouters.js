@@ -40,6 +40,7 @@ const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOn
 const deleteDeleteReading = require('./functions/DeleteDeleteReading');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattachedJournal');
+const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -125,12 +126,7 @@ normalRouter.post('/deleteJournal', postDeleteJournal);
 normalRouter.delete('/deleteUnAttachedJournal', deleteDeleteUnattachedJournal);
 
 /** Check whether user name is available */
-normalRouter.get('/isUserNameAvailable', (req, res) => {
-  mongodb.isUserNameAvailable(req.query, result => {
-    // logger.error(result);
-    res.send(result);
-  });
-});
+normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
 
 /** Get information from database's return and sign the user Object with jwt.
   * @param {object} user comes from database.
