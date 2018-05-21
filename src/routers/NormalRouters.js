@@ -37,6 +37,7 @@ const getFetchReadingsBaseOnHexagram = require('./functions/GetFetchReadingsBase
 const getSearchReadings = require('./functions/GetSearchReadings');
 const getFetchAllReadingList = require('./functions/GetFetchAllReadingList');
 const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOnName');
+const deleteDeleteReading = require('./functions/DeleteDeleteReading');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -113,11 +114,7 @@ normalRouter.get('/fetchAllReadingList', getFetchAllReadingList);
 normalRouter.get('/fetchReadingsBasedOnName', getFetchReadingsBasedOnName);
 
 /** ***************  Delete reading  ***************************** */
-normalRouter.delete('/deleteReading', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  mongodb.deleteReading({ readingId: req.query.readingId, userId: user._id })
-    .then(_ => res.sendStatus(200).end());
-});
+normalRouter.delete('/deleteReading', deleteDeleteReading);
 
 /** *****************  Delete one journal   ************************ */
 normalRouter.post('/deleteJournal', (req, res) => {
