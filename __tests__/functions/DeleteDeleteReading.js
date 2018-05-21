@@ -4,7 +4,7 @@ jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id', role: 1 }));
 jest.mock('../../src/MongoDB', () => ({ deleteReading: jest.fn().mockReturnValue(Promise.resolve({ result: 'result' })) }));
 
-describe('GetJournal', () => {
+describe('DeleteDeleteReading', () => {
   test('deleteDeleteReading without error', async () => {
     const mockEndFn = jest.fn();
     const mocksendStatus = jest.fn().mockReturnValue({ end: mockEndFn });
