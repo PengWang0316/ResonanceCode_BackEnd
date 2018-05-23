@@ -41,6 +41,7 @@ const deleteDeleteReading = require('./functions/DeleteDeleteReading');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattachedJournal');
 const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
+const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -128,6 +129,7 @@ normalRouter.delete('/deleteUnAttachedJournal', deleteDeleteUnattachedJournal);
 /** Check whether user name is available */
 normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
 
+// Should be removed eventually.
 /** Get information from database's return and sign the user Object with jwt.
   * @param {object} user comes from database.
   * @return {object} return an object that contains jwt message and formated user object.
@@ -142,11 +144,7 @@ const getReturnUserObject = user => {
 /** Changing a user's default hexagram choosing mode.
   * After update the database, resign the jwt and send back the user object for redux and jwtMessage to localstorage.
 */
-normalRouter.put('/updateSettingCoinMode', (req, res) => {
-  const user = verifyJWT({ message: req.body.jwtMessage, res });
-  mongodb.updateUser(user._id, { 'settings.coinMode': req.body.coinMode })
-    .then(result => res.json(getReturnUserObject(result.value)));
-});
+normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
 
 /* Fetch how many reading a user has */
 normalRouter.get('/fetchReadingsAmount', (req, res) => {
@@ -257,7 +255,7 @@ normalRouter.put('/savePushSubscription', (req, res) => {
   // const updatePushSubscription = { 'settings.isPushNotification': true };
   // updatePushSubscription[`pushSubscriptions.${pushSubscription.keys.auth}`] = pushSubscription;
   mongodb.updateUser(user._id, { [`pushSubscriptions.${pushSubscription.keys.auth}`]: pushSubscription, 'settings.isPushNotification': true })
-    .then(result => res.json(getReturnUserObject(result.value)))
+    .then(result => res.json(getReturnUserObject(result.value))) // TODO: Using getReturnUserObject util function
     .catch(err => logger.error('/savePushSubscription', err));
 });
 
@@ -265,7 +263,7 @@ normalRouter.put('/savePushSubscription', (req, res) => {
 normalRouter.put('/turnOffPushSubscription', (req, res) => {
   const user = verifyJWT({ message: req.body.jwtMessage, res });
   mongodb.updateUser(user._id, { 'settings.isPushNotification': false })
-    .then(result => res.json(getReturnUserObject(result.value)))
+    .then(result => res.json(getReturnUserObject(result.value)))// TODO: Using getReturnUserObject util function
     .catch(err => logger.error('/turnOffPushSubscription', err));
 });
 
