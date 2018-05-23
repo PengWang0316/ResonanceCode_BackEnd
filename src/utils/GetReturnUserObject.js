@@ -10,7 +10,7 @@ const { NORMAL_ROLE } = process.env;
 */
 module.exports = user => {
   const returnUser = Object.assign({
-    isAuth: true, role: user.role || NORMAL_ROLE
+    isAuth: true, role: user.role || NORMAL_ROLE * 1
   }, user);
   return { jwt: jwt.sign(returnUser, process.env.JWT_SECERT), user: returnUser };
 };
