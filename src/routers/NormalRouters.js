@@ -44,6 +44,7 @@ const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
 const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
+const getFetchAllUserList = require('./functions/GetFetchAllUserList');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -155,9 +156,7 @@ normalRouter.get('/fetchReadingsAmount', getFetchReadingsAmount);
 normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
 
 /* Fetch user names based on the page number */
-normalRouter.get('/fetchAllUserList', (req, res) => {
-  mongodb.fetchAllUserList(req.query).then(result => res.json(result)).catch(err => logger.error('/fetchAllUserList', err));
-});
+normalRouter.get('/fetchAllUserList', getFetchAllUserList);
 
 /* Updating the share list for a reading's journal. */
 normalRouter.put('/updateJournalShareList', (req, res) => {
