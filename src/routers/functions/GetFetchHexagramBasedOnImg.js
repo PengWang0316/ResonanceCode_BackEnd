@@ -3,4 +3,4 @@ const mongodb = require('../../MongoDB');
 
 module.exports = (req, res) =>
   mongodb.fetchHexagram(req.query.imgArray)
-    .then(result => res.json(result)).catch(err => logger.error(err));
+    .then(result => res.json(result)).catch(err => logger.error('/fetchHexagramBasedOnImg', err));

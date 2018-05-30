@@ -9,7 +9,7 @@ module.exports = (req, res) => {
   const user = verifyJWT({ message: req.query.jwtMessage, res });
   if (user.role === ADMINISTRATOR_ROLE * 1)
     return mongodb.getHexagrams({})
-      .then(result => res.json(result)).catch(err => logger.error(err));
+      .then(result => res.json(result)).catch(err => logger.error('/fetchAllHexagrams', err));
   res.status(401).end('Unauthenticated User');
   return null;
 };

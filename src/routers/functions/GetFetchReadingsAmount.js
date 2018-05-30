@@ -4,4 +4,4 @@ const mongodb = require('../../MongoDB');
 
 module.exports = (req, res) =>
   mongodb.fetchReadingsAmount(verifyJWT({ message: req.query.jwtMessage, res })._id)
-    .then(result => res.json(result)).catch(err => logger.error(err));
+    .then(result => res.json(result)).catch(err => logger.error('/fetchReadingsAmount', err));

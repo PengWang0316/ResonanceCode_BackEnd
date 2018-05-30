@@ -7,5 +7,5 @@ module.exports = (req, res) => {
   return mongodb.getUnattachedJournalList(user._id).then(result => {
     res.json(result.sort((previous, next) =>
       new Date(next.date).getTime() - new Date(previous.date).getTime()));
-  }).catch(err => logger.error('fetchUnattachedJournals', err));
+  }).catch(err => logger.error('/fetchUnattachedJournals', err));
 };

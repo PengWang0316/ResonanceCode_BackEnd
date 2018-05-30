@@ -9,5 +9,5 @@ module.exports = (req, res) => {
   return mongodb.getReadingsByHexagramId(
     req.query.imageArray,
     user.role * 1 === ADMINISTRATOR_ROLE * 1 ? null : user._id
-  ).then(result => res.json(result)).catch(err => logger.error(err));
+  ).then(result => res.json(result)).catch(err => logger.error('/fetchReadingsBasedOnHexagram', err));
 };

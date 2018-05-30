@@ -7,4 +7,4 @@ module.exports = (req, res) =>
     journalId: req.body.journalId,
     readingIds: req.body.readingIds,
     userId: verifyJWT({ message: req.body.jwtMessage, res })._id
-  }).then(_ => res.sendStatus(200).end()).catch(err => logger.error(err));
+  }).then(_ => res.sendStatus(200).end()).catch(err => logger.error('/deleteJournal', err));

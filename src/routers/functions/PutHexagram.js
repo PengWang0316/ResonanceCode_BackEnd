@@ -9,5 +9,5 @@ module.exports = (req, res) => {
   const user = verifyJWT({ message: req.body.jwtMessage, res });
   if (user.role !== ADMINISTRATOR_ROLE * 1) throw new Error('No invalid operation.');
   else return mongodb.updateHexagram(req.body.hexagram)
-    .then(_ => res.sendStatus(200).end()).catch(err => logger.error(err));
+    .then(_ => res.sendStatus(200).end()).catch(err => logger.error('/hexagram', err));
 };

@@ -15,5 +15,5 @@ module.exports = (req, res) => {
     req.query.pageNumber,
     req.query.numberPerpage,
     user.role * 1 === ADMINISTRATOR_ROLE * 1 ? null : user._id
-  ).then(result => res.json(result)).catch(err => logger.error(err));
+  ).then(result => res.json(result)).catch(err => logger.error('/fetchReadings', err));
 };

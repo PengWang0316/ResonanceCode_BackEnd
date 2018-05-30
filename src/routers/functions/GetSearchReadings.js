@@ -10,5 +10,5 @@ module.exports = (req, res) => {
   // logger.error(user);
   if (user.role * 1 !== ADMINISTRATOR_ROLE * 1) queryObject.userId = user._id;
   return mongodb.getSearchReadings(queryObject)
-    .then(result => res.json(result)).catch(err => logger.error(err));
+    .then(result => res.json(result)).catch(err => logger.error('/searchReadings', err));
 };

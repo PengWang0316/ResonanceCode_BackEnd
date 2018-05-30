@@ -6,4 +6,4 @@ module.exports = (req, res) =>
   mongodb.deleteUnattachedJournal({
     journalId: req.query.journalId,
     userId: verifyJWT({ message: req.query.jwtMessage, res })._id
-  }).then(_ => res.sendStatus(200).end()).catch(err => logger.error(err));
+  }).then(_ => res.sendStatus(200).end()).catch(err => logger.error('/deleteUnattachedJournal', err));

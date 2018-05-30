@@ -7,4 +7,4 @@ module.exports = (req, res) =>
   mongodb.updateUser(
     verifyJWT({ message: req.body.jwtMessage, res })._id,
     { 'settings.coinMode': req.body.coinMode }
-  ).then(result => res.json(getReturnUserObject(result.value))).catch(err => logger.error(err));
+  ).then(result => res.json(getReturnUserObject(result.value))).catch(err => logger.error('/updateSettingCoinMode', err));
