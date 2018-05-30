@@ -43,6 +43,7 @@ const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattache
 const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
+const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -151,9 +152,7 @@ normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
 normalRouter.get('/fetchReadingsAmount', getFetchReadingsAmount);
 
 /* Fetch the total number of users */
-normalRouter.get('/fetchUsersAmount', (req, res) => {
-  mongodb.fetchUsersAmount().then(result => res.json(result));
-});
+normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
 
 /* Fetch user names based on the page number */
 normalRouter.get('/fetchAllUserList', (req, res) => {
