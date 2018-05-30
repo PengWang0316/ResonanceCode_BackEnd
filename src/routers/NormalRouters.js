@@ -42,6 +42,7 @@ const postDeleteJournal = require('./functions/PostDeleteJournal');
 const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattachedJournal');
 const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
+const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -129,7 +130,7 @@ normalRouter.delete('/deleteUnAttachedJournal', deleteDeleteUnattachedJournal);
 /** Check whether user name is available */
 normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
 
-// Should be removed eventually.
+// TODO: Should be removed eventually. Has already been moved to utils/GetReturnUserObject.js
 /** Get information from database's return and sign the user Object with jwt.
   * @param {object} user comes from database.
   * @return {object} return an object that contains jwt message and formated user object.
@@ -147,10 +148,7 @@ const getReturnUserObject = user => {
 normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
 
 /* Fetch how many reading a user has */
-normalRouter.get('/fetchReadingsAmount', (req, res) => {
-  const user = verifyJWT({ message: req.query.jwtMessage, res });
-  mongodb.fetchReadingsAmount(user._id).then(result => res.json(result));
-});
+normalRouter.get('/fetchReadingsAmount', getFetchReadingsAmount);
 
 /* Fetch the total number of users */
 normalRouter.get('/fetchUsersAmount', (req, res) => {
