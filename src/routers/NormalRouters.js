@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken'); // May need to be deleted
 
 const normalRouter = require('express').Router();
 // const winston = require('winston');  Moved out to the utils
-const webpush = require('web-push');
+// const webpush = require('web-push');
 const pdfmake = require('pdfmake/build/pdfmake');
 const pdfFonts = require('pdfmake/build/vfs_fonts.js');
 const cloudinary = require('cloudinary');
@@ -45,6 +45,7 @@ const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode')
 const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
 const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
 const getFetchAllUserList = require('./functions/GetFetchAllUserList');
+const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -159,35 +160,7 @@ normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
 normalRouter.get('/fetchAllUserList', getFetchAllUserList);
 
 /* Updating the share list for a reading's journal. */
-normalRouter.put('/updateJournalShareList', (req, res) => {
-  const user = verifyJWT({ message: req.body.jwtMessage, res });
-  const {
-    journalId, readingId, shareList, existedShareList
-  } = req.body;
-  mongodb.updateJournalShareList({
-    journalId, readingId, shareList, userId: user._id
-  });
-  res.sendStatus(200).end();
-  // starting to push notification to new shared user.
-  const newSharedUserIds = shareList.map(internalUser => {
-    if (existedShareList.indexOf(internalUser.id) === -1) return internalUser.id;
-    return null;
-  });
-  mongodb.fetchUsersPushSubscriptions(newSharedUserIds).then(users => {
-    const notificatioOptions = {
-      vapidDetails: {
-        subject: 'https://kairoscope.resonance-code.com',
-        publicKey: process.env.APPLICATION_SERVER_PUBLIC_KEY,
-        privateKey: process.env.APPLICATION_SERVER_PRIVATE_KEY
-      }
-    };
-    let promiseChain = Promise.resolve();
-    users.forEach(eachUser => {
-      promiseChain = promiseChain.then(() =>
-        Object.keys(eachUser.pushSubscriptions).forEach(key => webpush.sendNotification(eachUser.pushSubscriptions[key], 'Someone shared a reading to you. Click to view it.', notificatioOptions).catch(err => logger.error('existedShareList push notification error: statusCode: ', err.statusCode, 'error: ', err))));
-    });
-  });
-});
+normalRouter.put('/updateJournalShareList', putUpdateJournalShareList);
 
 const eliminateUnnecessaryJournal = ({ readings, userId }) => {
   // const newReadings = { ...readings };
