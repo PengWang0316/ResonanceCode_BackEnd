@@ -14,4 +14,4 @@ const verifyJWT = ({ message, res }) => {
     return null;
   }
 };
-export default verifyJWT;
+module.exports = verifyJWT;
