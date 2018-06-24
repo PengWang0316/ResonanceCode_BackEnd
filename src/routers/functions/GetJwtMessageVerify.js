@@ -5,5 +5,9 @@ const mongodb = require('../../MongoDB');
 
 module.exports = (req, res) =>
   mongodb.fetchOneUser(verifyJWT({ message: req.query.jwtMessage, res })._id)
-    .then(result => res.json({ ...result, isAuth: true }))
+    .then(result => {
+      const returnUser = { ...result, isAuth: true };
+      delete returnUser.password;
+      res.json(returnUser);
+    })
     .catch(err => logger.error('/jwtMessageVerify', err));
