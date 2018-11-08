@@ -1,19 +1,19 @@
-import deleteDeleteReading from '../../src/routers/functions/DeleteDeleteReading';
+import deleteDeleteReadingController from '../../src/controllers/DeleteReading';
 
 jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id', role: 1 }));
-jest.mock('../../src/MongoDB', () => ({ deleteReading: jest.fn().mockReturnValue(Promise.resolve({ result: 'result' })) }));
+jest.mock('../../src/models/Reading', () => ({ deleteReading: jest.fn().mockReturnValue(Promise.resolve({ result: 'result' })) }));
 
-describe('DeleteDeleteReading', () => {
-  test('deleteDeleteReading without error', async () => {
+describe('DeleteReading', () => {
+  test('deleteReading without error', async () => {
     const mockEndFn = jest.fn();
     const mocksendStatus = jest.fn().mockReturnValue({ end: mockEndFn });
     const res = { sendStatus: mocksendStatus };
     const req = { query: { jwtMessage: 'message', readingId: 'readingId' } };
     const verifyJWT = require('../../src/utils/VerifyJWT');
-    const { deleteReading } = require('../../src/MongoDB');
+    const { deleteReading } = require('../../src/models/Reading');
 
-    await deleteDeleteReading(req, res);
+    await deleteDeleteReadingController(req, res);
 
     expect(verifyJWT).toHaveBeenCalledTimes(1);
     expect(verifyJWT).toHaveBeenLastCalledWith({ message: 'message', res });
@@ -23,24 +23,22 @@ describe('DeleteDeleteReading', () => {
     expect(mockEndFn).toHaveBeenCalledTimes(1);
   });
 
-  test('deleteDeleteReading with error', async () => {
+  test('deleteReading with error', async () => {
     const mockEndFn = jest.fn();
-    const mocksendStatus = jest.fn().mockReturnValue({ end: mockEndFn });
-    const res = { sendStatus: mocksendStatus };
+    const res = { end: mockEndFn };
     const req = { query: { jwtMessage: 'message', readingId: 'readingId' } };
     const verifyJWT = require('../../src/utils/VerifyJWT');
-    const { deleteReading } = require('../../src/MongoDB');
+    const { deleteReading } = require('../../src/models/Reading');
     deleteReading.mockReturnValue(Promise.reject());
     const { error } = require('../../src/utils/Logger');
 
-    await deleteDeleteReading(req, res);
+    await deleteDeleteReadingController(req, res);
 
     expect(verifyJWT).toHaveBeenCalledTimes(2);
     expect(verifyJWT).toHaveBeenLastCalledWith({ message: 'message', res });
     expect(deleteReading).toHaveBeenCalledTimes(2);
     expect(deleteReading).toHaveBeenLastCalledWith({ userId: 'id', readingId: 'readingId' });
-    expect(mocksendStatus).not.toHaveBeenCalled();
-    expect(mockEndFn).not.toHaveBeenCalled();
+    expect(mockEndFn).toHaveBeenCalledTimes(1);
     expect(error).toHaveBeenCalledTimes(1);
   });
 });
