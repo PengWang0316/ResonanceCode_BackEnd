@@ -1,4 +1,5 @@
 const mongodb = require('mongodb');
+
 const MongoClient = mongodb.MongoClient;
 const winston = require('winston');
 
@@ -19,11 +20,11 @@ const DB_NAME = process.env.DB_NAME;
 /** Setting up the Winston logger.
   * Under the development mode log to console.
 */
-const logger = new winston.Logger({
+const logger = ({
   level: process.env.LOGGING_LEVEL,
   transports: [
-    new (winston.transports.Console)()
-  ]
+    new (winston.transports.Console)(),
+  ],
 });
 
 /** Replaces the previous transports with those in the
