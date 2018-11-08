@@ -403,11 +403,12 @@ exports.getLinesBigrams = (queryObject, callback) => {
 */
 
 /*  Delete reading  */
-exports.deleteReading = ({ readingId, userId }) => promiseInsertResult(db =>
-  db.collection(COLLECTION_READINGS).deleteOne({
-    _id: new mongodb.ObjectId(readingId),
-    user_id: userId
-  }));
+// Moved to the Reading model.
+// exports.deleteReading = ({ readingId, userId }) => promiseInsertResult(db =>
+//   db.collection(COLLECTION_READINGS).deleteOne({
+//     _id: new mongodb.ObjectId(readingId),
+//     user_id: userId
+//   }));
 
 /* Deprecated old version
 exports.deleteReading = (readingId, userId, callback) => {
