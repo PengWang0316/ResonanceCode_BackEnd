@@ -524,10 +524,11 @@ exports.deleteJournal = ({ journalId, readingIds, userId }) =>
     ));
 
 /*  Delete one unattached journal  */
-exports.deleteUnattachedJournal = ({ journalId, userId }) =>
-  promiseInsertResult(db =>
-    db.collection(COLLECTION_JOURNAL_ENTRIES)
-      .deleteOne({ _id: new mongodb.ObjectId(journalId), user_id: userId }));
+// Moved to the Journal model.
+// exports.deleteUnattachedJournal = ({ journalId, userId }) =>
+//   promiseInsertResult(db =>
+//     db.collection(COLLECTION_JOURNAL_ENTRIES)
+//       .deleteOne({ _id: new mongodb.ObjectId(journalId), user_id: userId }));
 
 /** Working with below method to update journal in readings.
  * @param {object} journal is an object that has journal's information.
