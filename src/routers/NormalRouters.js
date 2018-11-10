@@ -38,7 +38,6 @@ const getSearchReadings = require('./functions/GetSearchReadings');
 const getFetchAllReadingList = require('./functions/GetFetchAllReadingList');
 const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOnName');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
-const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattachedJournal');
 const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
@@ -47,6 +46,7 @@ const getFetchAllUserList = require('./functions/GetFetchAllUserList');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
 const deleteReading = require('../controllers/DeleteReading');
+const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -129,7 +129,7 @@ normalRouter.delete('/deleteReading', deleteReading);
 normalRouter.post('/deleteJournal', postDeleteJournal);
 
 /** Delete one unattached journal */
-normalRouter.delete('/deleteUnAttachedJournal', deleteDeleteUnattachedJournal);
+normalRouter.delete('/deleteUnAttachedJournal', deleteUnattachedJournal);
 
 /** Check whether user name is available */
 normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
