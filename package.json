@@ -17,6 +17,9 @@
   ],
   "author": "Kevin Wang <rocwang0316@gmail.com>",
   "license": "MIT",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
