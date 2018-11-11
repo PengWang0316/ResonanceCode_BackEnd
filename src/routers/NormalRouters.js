@@ -30,7 +30,6 @@ const getFetchJournals = require('./functions/GetFetchJournals');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
 const getJournal = require('./functions/GetJournal');
 const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
-const getFetchAllHexagrams = require('./functions/GetFetchAllHexagrams');
 const getFetchHexagrams = require('./functions/GetFetchHexagrams');
 const getFetchHexagramBasedOnImg = require('./functions/GetFetchHexagramBasedOnImg');
 const getFetchReadingsBaseOnHexagram = require('./functions/GetFetchReadingsBaseOnHexagram');
@@ -46,6 +45,7 @@ const getFetchAllUserList = require('./functions/GetFetchAllUserList');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
 const deleteReading = require('../controllers/DeleteReading');
+const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
@@ -105,7 +105,7 @@ normalRouter.get('/journalBasedOnJournalReading', getJournalBaseOnJournalReading
 normalRouter.get('/fetchHexagrams', getFetchHexagrams);
 
 /** *************  Getting all hexagrams  ******************** */
-normalRouter.get('/fetchAllHexagrams', getFetchAllHexagrams);
+normalRouter.get('/fetchAllHexagrams', fetchAllHexagrams);
 
 /** Fetching one hexagram */
 normalRouter.get('/fetchHexagramBasedOnImg', getFetchHexagramBasedOnImg);
