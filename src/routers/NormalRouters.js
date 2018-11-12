@@ -40,11 +40,11 @@ const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
 const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
-const getFetchAllUserList = require('./functions/GetFetchAllUserList');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
 const deleteReading = require('../controllers/DeleteReading');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
+const fetchAllUserList = require('../controllers/FetchAllUserList');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 // API_BASE_URL = "/"; Deprecated
@@ -158,7 +158,7 @@ normalRouter.get('/fetchReadingsAmount', getFetchReadingsAmount);
 normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
 
 /* Fetch user names based on the page number */
-normalRouter.get('/fetchAllUserList', getFetchAllUserList);
+normalRouter.get('/fetchAllUserList', fetchAllUserList);
 
 /* Updating the share list for a reading's journal. */
 normalRouter.put('/updateJournalShareList', putUpdateJournalShareList);
