@@ -1,12 +1,11 @@
-import FetchAllHexagramsController from '../../src/controllers/FetchAllHexagrams';
+// Setting up the env variable.
+process.env.ADMINISTRATOR_ROLE = 1; // This line has to be put on the first line.
+const FetchAllHexagramsController = require('../../src/controllers/FetchAllHexagrams');
 
-// jest.mock('dotenv', () => ({ config: jest.fn() }));
+jest.mock('dotenv', () => ({ config: jest.fn() }));
 jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id', role: 1 }));
 jest.mock('../../src/models/Hexagram', () => ({ fetchHexagrams: jest.fn().mockReturnValue(Promise.resolve()) }));
-
-// Setting up the env variable.
-// process.env.ADMINISTRATOR_ROLE = 1;
 
 describe('FetchAllHexagrams controller', () => {
   test('fetchHexagrams without error role 1', async () => {
