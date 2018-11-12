@@ -30,7 +30,6 @@ const getFetchJournals = require('./functions/GetFetchJournals');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
 const getJournal = require('./functions/GetJournal');
 const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
-const getFetchHexagrams = require('./functions/GetFetchHexagrams');
 const getFetchReadingsBaseOnHexagram = require('./functions/GetFetchReadingsBaseOnHexagram');
 const getSearchReadings = require('./functions/GetSearchReadings');
 const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOnName');
@@ -42,6 +41,7 @@ const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
 const deleteReading = require('../controllers/DeleteReading');
+const fetchHexagrams = require('../controllers/FetchHexagrams');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
@@ -102,7 +102,7 @@ normalRouter.get('/journal', getJournal);
 normalRouter.get('/journalBasedOnJournalReading', getJournalBaseOnJournalReading);
 
 /** *************  Getting hexagrams  ******************** */
-normalRouter.get('/fetchHexagrams', getFetchHexagrams);
+normalRouter.get('/fetchHexagrams', fetchHexagrams);
 
 /** *************  Getting all hexagrams  ******************** */
 normalRouter.get('/fetchAllHexagrams', fetchAllHexagrams);
