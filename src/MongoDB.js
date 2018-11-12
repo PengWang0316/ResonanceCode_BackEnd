@@ -279,11 +279,12 @@ function searchForReadings(query, callback, results) {
   * @param {string} userId is the user id.
   * @return {object} Return an promise with fetching result.
  */
-exports.fetchAllReadingList = ({ userId, pageNumber, numberPerpage }) => promiseFindResult(db =>
-  db.collection(COLLECTION_READINGS)
-    .find({ user_id: userId }, { reading_name: 1, date: 1 })
-    .skip(pageNumber * numberPerpage).limit(numberPerpage * 1)
-    .sort({ date: -1 }));
+// Moved to the Reading model
+// exports.fetchAllReadingList = ({ userId, pageNumber, numberPerpage }) => promiseFindResult(db =>
+//   db.collection(COLLECTION_READINGS)
+//     .find({ user_id: userId }, { reading_name: 1, date: 1 })
+//     .skip(pageNumber * numberPerpage).limit(numberPerpage * 1)
+//     .sort({ date: -1 }));
 
 /*  Get search readings  */
 exports.getSearchReadings = query => new Promise((resolve, reject) => {
