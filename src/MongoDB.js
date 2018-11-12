@@ -750,10 +750,11 @@ exports.fetchUsersAmount = () => promiseReturnResult(db =>
   * @param {object} An object that contains pageNumber as current page the user wants to get and numberPerpage as how many users' name the user wants to see in a same page.
   * @return {promise} Returning a promise with user objects that have displayName, photo, and _id field.
 */
-exports.fetchAllUserList = ({ pageNumber, numberPerpage }) => promiseFindResult(db =>
-  db.collection(COLLECTION_USER).find({}, {
-    displayName: 1, photo: 1, role: 1, 'settings.customName': 1
-  }).skip(pageNumber * numberPerpage).limit(numberPerpage * 1));
+// Moved to the User modle.
+// exports.fetchAllUserList = ({ pageNumber, numberPerpage }) => promiseFindResult(db =>
+//   db.collection(COLLECTION_USER).find({}, {
+//     displayName: 1, photo: 1, role: 1, 'settings.customName': 1
+//   }).skip(pageNumber * numberPerpage).limit(numberPerpage * 1));
 
 /** Updating the shareList for a reading's journal.
   * @param {object} An object that contains readingId, journalId, shareList, and userId information.
