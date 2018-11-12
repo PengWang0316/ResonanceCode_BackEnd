@@ -16,7 +16,7 @@ describe('GetSearchReadings', () => {
     const { getSearchReadings } = require('../../src/MongoDB');
     const parseReturnValue = { criterias: 'criterias' };
     const mockParseFn = jest.fn().mockReturnValue(parseReturnValue);
-    window.JSON = { parse: mockParseFn };
+    JSON = { parse: mockParseFn };
 
     await getSearchReadingsCall(req, res);
     expect(verifyJWT).toHaveBeenCalledTimes(1);
@@ -37,7 +37,7 @@ describe('GetSearchReadings', () => {
     const { getSearchReadings } = require('../../src/MongoDB');
     const parseReturnValue = { criterias: 'criterias' };
     const mockParseFn = jest.fn().mockReturnValue(parseReturnValue);
-    window.JSON = { parse: mockParseFn };
+    JSON = { parse: mockParseFn };
 
     await getSearchReadingsCall(req, res);
     expect(verifyJWT).toHaveBeenCalledTimes(2);
@@ -59,7 +59,7 @@ describe('GetSearchReadings', () => {
     getSearchReadings.mockReturnValue(Promise.reject());
     const parseReturnValue = { criterias: 'criterias' };
     const mockParseFn = jest.fn().mockReturnValue(parseReturnValue);
-    window.JSON = { parse: mockParseFn };
+    JSON = { parse: mockParseFn };
     const { error } = require('../../src/utils/Logger');
 
     await getSearchReadingsCall(req, res);
