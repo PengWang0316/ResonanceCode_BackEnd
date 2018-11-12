@@ -452,11 +452,12 @@ exports.createJournal = (journal) => new Promise((resolve, reject) => {
 });
 
 /*  Get Journal list  */
-exports.getJournalList = queryObject => promiseFindResult(db => {
-  const query = { _id: new mongodb.ObjectId(queryObject.readingId) };
-  if (queryObject.userId) query.user_id = queryObject.userId;
-  return db.collection(COLLECTION_READINGS).find(query, { journal_entries: 1 });
-});
+// Moved to the Reading model.
+// exports.getJournalList = queryObject => promiseFindResult(db => {
+//   const query = { _id: new mongodb.ObjectId(queryObject.readingId) };
+//   if (queryObject.userId) query.user_id = queryObject.userId;
+//   return db.collection(COLLECTION_READINGS).find(query, { journal_entries: 1 });
+// });
 
 /* Get unattached journal list */
 exports.getUnattachedJournalList = userId => promiseFindResult(db =>

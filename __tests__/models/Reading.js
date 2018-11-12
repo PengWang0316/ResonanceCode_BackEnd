@@ -46,4 +46,22 @@ describe('Reading Model', () => {
     expect(mockSort).toHaveBeenCalledTimes(1);
     expect(mockSort).toHaveBeenLastCalledWith({ date: -1 });
   });
+
+  test('fetchJournalList with user_id', () => {
+    Reading.fetchJournalList({ readingId: '5b182e9138dbb7258cc39546', userId: '5b182e9138dbb7258cc39547' });
+
+    expect(mockCollection).toHaveBeenCalledTimes(3);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(mockFind).toHaveBeenCalledTimes(2);
+    expect(mockFind).toHaveBeenLastCalledWith({ _id: new ObjectId('5b182e9138dbb7258cc39546'), user_id: '5b182e9138dbb7258cc39547' }, { journal_entries: 1 });
+  });
+
+  test('fetchJournalList without user_id', () => {
+    Reading.fetchJournalList({ readingId: '5b182e9138dbb7258cc39546' });
+
+    expect(mockCollection).toHaveBeenCalledTimes(4);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(mockFind).toHaveBeenCalledTimes(3);
+    expect(mockFind).toHaveBeenLastCalledWith({ _id: new ObjectId('5b182e9138dbb7258cc39546') }, { journal_entries: 1 });
+  });
 });
