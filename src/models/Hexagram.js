@@ -23,4 +23,6 @@ exports.fetchHexagrams = query => promiseFindResult(db => db.collection(COLLECTI
   .find(getHexagramsQueryObject(query)));
 
 /*  Fetching hexagram based on the image arr */
-exports.fetchHexagramBasedOnImgArr = imgArray => promiseNextResult(db => db.collection(COLLECTION_HEXAGRAMS).find({ img_arr: imgArray }));
+exports.fetchHexagramBasedOnImgArr = imgArray => promiseNextResult(db => db
+  .collection(COLLECTION_HEXAGRAMS)
+  .find({ img_arr: imgArray }));
