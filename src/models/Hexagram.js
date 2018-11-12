@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 
-const { promiseFindResult } = require('../MongoDBHelper');
+const { promiseFindResult, promiseNextResult } = require('../MongoDBHelper');
 
 const COLLECTION_HEXAGRAMS = 'hexagrams';
 
@@ -21,3 +21,6 @@ function getHexagramsQueryObject(query) {
 /*  fetch hexagrams  */
 exports.fetchHexagrams = query => promiseFindResult(db => db.collection(COLLECTION_HEXAGRAMS)
   .find(getHexagramsQueryObject(query)));
+
+/*  Fetching hexagram based on the image arr */
+exports.fetchHexagramBasedOnImgArr = imgArray => promiseNextResult(db => db.collection(COLLECTION_HEXAGRAMS).find({ img_arr: imgArray }));

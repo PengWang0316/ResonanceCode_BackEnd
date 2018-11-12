@@ -327,14 +327,15 @@ exports.getSearchReadings = query => new Promise((resolve, reject) => {
 // };
 
 /*  Fetching hexagram  */
-exports.fetchHexagram = imgArray => new Promise((resolve, reject) => {
-  connectToDb(db => {
-    db.collection(COLLECTION_HEXAGRAMS).find({ img_arr: imgArray }).next((err, result) => {
-      if (err) reject(err);
-      resolve(result);
-    });
-  });
-});
+// Moved to the Hexagram model as fetchHexagramBasedOnImgArr
+// exports.fetchHexagram = imgArray => new Promise((resolve, reject) => {
+//   connectToDb(db => {
+//     db.collection(COLLECTION_HEXAGRAMS).find({ img_arr: imgArray }).next((err, result) => {
+//       if (err) reject(err);
+//       resolve(result);
+//     });
+//   });
+// });
 
 /* Fetch lines bigram */
 // Not use anymore
