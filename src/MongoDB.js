@@ -742,8 +742,9 @@ exports.deleteUserGroup = ({ userId, groupName }) => promiseReturnResult(db =>
   * @param {string} userId is the user's id.
   * @return {promise} Returning a promise object with the amount number of this user's reading.
 */
-exports.fetchReadingsAmount = userId => promiseReturnResult(db =>
-  db.collection(COLLECTION_READINGS).count({ user_id: userId }));
+// Moved to the Reading model
+// exports.fetchReadingsAmount = userId => promiseReturnResult(db =>
+//   db.collection(COLLECTION_READINGS).count({ user_id: userId }));
 
 /** Getting the amount number of all user.
   * @return {promise} Returning a promise object with the amount number of this user's reading.

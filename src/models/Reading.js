@@ -1,7 +1,9 @@
 const { ObjectId } = require('mongodb');
 const logger = require('../utils/Logger');
 
-const { promiseInsertResult, promiseFindResult, getDB } = require('../MongoDBHelper');
+const {
+  promiseInsertResult, promiseFindResult, getDB, promiseReturnResult,
+} = require('../MongoDBHelper');
 
 const COLLECTION_READINGS = 'readings';
 const COLLECTION_HEXAGRAMS = 'hexagrams';
@@ -23,11 +25,23 @@ exports.fetchAllReadingList = ({ userId, pageNumber, numberPerpage }) => promise
   .skip(pageNumber * numberPerpage).limit(numberPerpage * 1)
   .sort({ date: -1 }));
 
+/** Fetching journals from a reading
+  * @param {object} queryObject contains query constrains for a reading.
+  * @return {promise} return a promise with the joural information.
+*/
 exports.fetchJournalList = queryObject => promiseFindResult(db => {
   const query = { _id: new ObjectId(queryObject.readingId) };
   if (queryObject.userId) query.user_id = queryObject.userId;
   return db.collection(COLLECTION_READINGS).find(query, { journal_entries: 1 });
 });
+
+/** Getting the amount number of reading a user has.
+  * @param {string} userId is the user's id.
+  * @return {promise} Returning a promise object with the amount number of this user's reading.
+*/
+exports.fetchReadingsAmount = userId => promiseReturnResult(db => db
+  .collection(COLLECTION_READINGS)
+  .count({ user_id: userId }));
 
 /* ************  The code below is not tested since it will be refactored with Redux to improve the performence. ************** */
 /* Working with method below to execute the callback function when all hexagram are fetched. */

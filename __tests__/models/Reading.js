@@ -8,13 +8,18 @@ const mockSort = jest.fn();
 const mockLimit = jest.fn().mockReturnValue({ sort: mockSort });
 const mockSkip = jest.fn().mockReturnValue({ limit: mockLimit });
 const mockFind = jest.fn().mockReturnValue({ skip: mockSkip });
-const mockCollection = jest.fn().mockReturnValue({ deleteOne: mockDeleteOne, find: mockFind });
-// jest.mock('mongodb', () => ({ ObjectId: function ObjectId(id) }));
+const mockCount = jest.fn();
+const mockCollection = jest.fn()
+  .mockReturnValue({ deleteOne: mockDeleteOne, find: mockFind, count: mockCount });
+
 jest.mock('../../src/MongoDBHelper', () => ({
   promiseInsertResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
   promiseFindResult: jest.fn().mockImplementation(callback => callback({
+    collection: mockCollection,
+  })),
+  promiseReturnResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
 }));
@@ -63,5 +68,14 @@ describe('Reading Model', () => {
     expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
     expect(mockFind).toHaveBeenCalledTimes(3);
     expect(mockFind).toHaveBeenLastCalledWith({ _id: new ObjectId('5b182e9138dbb7258cc39546') }, { journal_entries: 1 });
+  });
+
+  test('fetchReadingsAmount', () => {
+    Reading.fetchReadingsAmount('userId');
+
+    expect(mockCollection).toHaveBeenCalledTimes(5);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(mockCount).toHaveBeenCalledTimes(1);
+    expect(mockCount).toHaveBeenLastCalledWith({ user_id: 'userId' });
   });
 });
