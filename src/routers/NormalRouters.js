@@ -34,7 +34,6 @@ const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOn
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
-const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
 const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
@@ -45,6 +44,7 @@ const fetchReadings = require('../controllers/FetchReadings');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
+const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
 // API_BASE_URL = "/"; Deprecated
@@ -152,7 +152,7 @@ const getReturnUserObject = user => {
 normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
 
 /* Fetch how many reading a user has */
-normalRouter.get('/fetchReadingsAmount', getFetchReadingsAmount);
+normalRouter.get('/fetchReadingsAmount', fetchReadingsAmount);
 
 /* Fetch the total number of users */
 normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
