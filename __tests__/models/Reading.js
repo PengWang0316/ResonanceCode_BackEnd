@@ -5,7 +5,7 @@ import Reading from '../../src/models/Reading';
 const COLLECTION_READINGS = 'readings';
 const mockDeleteOne = jest.fn();
 const mockLimitB = jest.fn();
-const mockSort = jest.fn().mockReturnValue({ limit:  mockLimitB });
+const mockSort = jest.fn().mockReturnValue({ limit: mockLimitB });
 const mockLimit = jest.fn().mockReturnValue({ sort: mockSort });
 const mockSkip = jest.fn().mockReturnValue({ limit: mockLimit });
 const mockFind = jest.fn().mockReturnValue({ skip: mockSkip, sort: mockSort });
@@ -23,6 +23,13 @@ jest.mock('../../src/MongoDBHelper', () => ({
   promiseReturnResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
+  getDB: jest.fn().mockReturnValue({
+    collection: jest.fn().mockReturnValue({
+      find: jest.fn().mockReturnValue({
+        toArray: jest.fn(),
+      }),
+    }),
+  }),
 }));
 
 describe('Reading Model', () => {
@@ -92,4 +99,19 @@ describe('Reading Model', () => {
     expect(mockLimitB).toHaveBeenCalledTimes(1);
     expect(mockLimitB).toHaveBeenLastCalledWith(10);
   });
+
+  // test('fetchReadingsByHexagramId, with user id', async () => {
+  //   const { getDB } = require('../../src/MongoDBHelper');
+  //   await Reading.fetchReadingsByHexagramId('imageArray', 'userId');
+
+  //   expect(getDB).toHaveBeenCalledTimes(1);
+  //   expect(getDB().collection).toHaveBeenCalledTimes(1);
+  //   expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+  //   expect(getDB().collection().find).toHaveBeenCalledTimes(1);
+  //   expect(getDB().collection().find).toHaveBeenLastCalledWith({
+  //     $or: [{ hexagram_arr_1: 'imageArray' }, { hexagram_arr_2: 'imageArray' }],
+  //     user_id: 'userId',
+  //   });
+  //   expect(getDB().collection().find().toArray).toHaveBeenCalledTimes(1);
+  // });
 });

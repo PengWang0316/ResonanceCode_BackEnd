@@ -82,6 +82,7 @@ const findHexagramImages = (readings, callback) => {
   });
 };
 
+// Have not been tested
 /*  Get readings  */
 exports.fetchRecentReadings = (pageNumber, numberPerpage, userId) => new Promise((resolve, reject) => {
   getDB().collection(COLLECTION_READINGS)
@@ -94,5 +95,16 @@ exports.fetchRecentReadings = (pageNumber, numberPerpage, userId) => new Promise
       if (result.length !== 0) findHexagramImages(result, backResult => resolve(backResult));
       else resolve(result);
     });
+});
+
+// Have not been tested
+/*  Get readings by Hexagram's id  */
+exports.fetchReadingsByHexagramId = (imageArray, userId) => new Promise((resolve, reject) => {
+  const queryObject = { $or: [{ hexagram_arr_1: imageArray }, { hexagram_arr_2: imageArray }] };
+  if (userId) queryObject.user_id = userId;
+  getDB().collection(COLLECTION_READINGS).find(queryObject).toArray((err, result) => {
+    if (result.length !== 0) findHexagramImages(result, callbackResult => resolve(callbackResult));
+    else resolve(result);
+  });
 });
 /* ************  The code above is not tested since it will be refactored with Redux to improve the performence. ************** */

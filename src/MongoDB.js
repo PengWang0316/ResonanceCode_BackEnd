@@ -650,18 +650,19 @@ function getHexagramsQueryObject(query) {
 exports.getHexagrams = query =>
   promiseFindResult(db => db.collection(COLLECTION_HEXAGRAMS).find(getHexagramsQueryObject(query)));
 
-/*  Get readings by Hexagram's id  */
-exports.getReadingsByHexagramId = (imageArray, userId) => new Promise((resolve, reject) => {
-  const queryObject = { $or: [{ hexagram_arr_1: imageArray }, { hexagram_arr_2: imageArray }] };
-  if (userId) queryObject.user_id = userId;
-  connectToDb((db) => {
-    db.collection(COLLECTION_READINGS).find(queryObject).toArray((err, result) => {
-      if (result.length !== 0)
-        findHexagramImages(result, callbackResult => resolve(callbackResult));
-      else resolve(result);
-    });
-  });
-});
+// /*  Get readings by Hexagram's id  */
+// Moved to the Reading model.
+// exports.getReadingsByHexagramId = (imageArray, userId) => new Promise((resolve, reject) => {
+//   const queryObject = { $or: [{ hexagram_arr_1: imageArray }, { hexagram_arr_2: imageArray }] };
+//   if (userId) queryObject.user_id = userId;
+//   connectToDb((db) => {
+//     db.collection(COLLECTION_READINGS).find(queryObject).toArray((err, result) => {
+//       if (result.length !== 0)
+//         findHexagramImages(result, callbackResult => resolve(callbackResult));
+//       else resolve(result);
+//     });
+//   });
+// });
 // (imageArray, userId, callback) => {
 //   const queryObject = { $or: [{ hexagram_arr_1: imageArray }, { hexagram_arr_2: imageArray }] };
 //   if (userId) queryObject.user_id = userId;
