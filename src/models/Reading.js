@@ -43,6 +43,13 @@ exports.fetchReadingsAmount = userId => promiseReturnResult(db => db
   .collection(COLLECTION_READINGS)
   .count({ user_id: userId }));
 
+/* Getting readings by searching name */
+exports.fetchReadingsBaseOnName = ({ user_id, keyWord }) => promiseFindResult(db => db
+  .collection(COLLECTION_READINGS)
+  .find({ user_id, reading_name: new RegExp(`.*${keyWord}.*`, 'i') }, { _id: 1, reading_name: 1 })
+  .sort({ date: -1 })
+  .limit(10));
+
 /* ************  The code below is not tested since it will be refactored with Redux to improve the performence. ************** */
 /* Working with method below to execute the callback function when all hexagram are fetched. */
 const checkHexagramImageReadAndCallback = (checkNumber, targetNumber, callback, result) => {

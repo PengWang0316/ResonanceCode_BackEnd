@@ -4,10 +4,11 @@ import Reading from '../../src/models/Reading';
 
 const COLLECTION_READINGS = 'readings';
 const mockDeleteOne = jest.fn();
-const mockSort = jest.fn();
+const mockLimitB = jest.fn();
+const mockSort = jest.fn().mockReturnValue({ limit:  mockLimitB });
 const mockLimit = jest.fn().mockReturnValue({ sort: mockSort });
 const mockSkip = jest.fn().mockReturnValue({ limit: mockLimit });
-const mockFind = jest.fn().mockReturnValue({ skip: mockSkip });
+const mockFind = jest.fn().mockReturnValue({ skip: mockSkip, sort: mockSort });
 const mockCount = jest.fn();
 const mockCollection = jest.fn()
   .mockReturnValue({ deleteOne: mockDeleteOne, find: mockFind, count: mockCount });
@@ -77,5 +78,18 @@ describe('Reading Model', () => {
     expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
     expect(mockCount).toHaveBeenCalledTimes(1);
     expect(mockCount).toHaveBeenLastCalledWith({ user_id: 'userId' });
+  });
+
+  test('fetchReadingsBaseOnName', () => {
+    Reading.fetchReadingsBaseOnName({ user_id: 'userId', keyWord: 'keyword' });
+
+    expect(mockCollection).toHaveBeenCalledTimes(6);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(mockFind).toHaveBeenCalledTimes(4);
+    expect(mockFind).toHaveBeenLastCalledWith({ user_id: 'userId', reading_name: new RegExp('.*keyword.*', 'i') }, { _id: 1, reading_name: 1 });
+    expect(mockSort).toHaveBeenCalledTimes(2);
+    expect(mockSort).toHaveBeenLastCalledWith({ date: -1 });
+    expect(mockLimitB).toHaveBeenCalledTimes(1);
+    expect(mockLimitB).toHaveBeenLastCalledWith(10);
   });
 });

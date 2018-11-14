@@ -682,9 +682,10 @@ exports.updateHexagram = hexagram => promiseInsertResult(db => {
 });
 
 /* Getting readings by searching name */
-exports.fetchReadingsBaseOnName = ({ user_id, keyWord }) =>
-  promiseFindResult(db =>
-    db.collection(COLLECTION_READINGS).find({ user_id, reading_name: new RegExp(`.*${keyWord}.*`, 'i') }, { _id: 1, reading_name: 1 }).sort({ date: -1 }).limit(10));
+// Moved to the Reading model
+// exports.fetchReadingsBaseOnName = ({ user_id, keyWord }) =>
+//   promiseFindResult(db =>
+//     db.collection(COLLECTION_READINGS).find({ user_id, reading_name: new RegExp(`.*${keyWord}.*`, 'i') }, { _id: 1, reading_name: 1 }).sort({ date: -1 }).limit(10));
 
 /* checking whether user name is still available */
 exports.isUserNameAvailable = query => new Promise((resolve, reject) =>
