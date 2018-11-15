@@ -32,14 +32,14 @@ const getSearchReadings = require('./functions/GetSearchReadings');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
-const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
-const fetchHexagrams = require('../controllers/FetchHexagrams');
 const fetchReadings = require('../controllers/FetchReadings');
+const fetchHexagrams = require('../controllers/FetchHexagrams');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
+const fetchUsersAmount = require('../controllers/FetchUsersAmount');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
@@ -155,7 +155,7 @@ normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
 normalRouter.get('/fetchReadingsAmount', fetchReadingsAmount);
 
 /* Fetch the total number of users */
-normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
+normalRouter.get('/fetchUsersAmount', fetchUsersAmount);
 
 /* Fetch user names based on the page number */
 normalRouter.get('/fetchAllUserList', fetchAllUserList);
