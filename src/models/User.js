@@ -1,4 +1,4 @@
-const { promiseFindResult } = require('../MongoDBHelper');
+const { promiseFindResult, promiseReturnResult } = require('../MongoDBHelper');
 
 const COLLECTION_USER = 'users';
 
@@ -10,3 +10,10 @@ exports.fetchAllUserList = ({ pageNumber, numberPerpage }) => promiseFindResult(
   .collection(COLLECTION_USER).find({}, {
     displayName: 1, photo: 1, role: 1, 'settings.customName': 1,
   }).skip(pageNumber * numberPerpage).limit(numberPerpage * 1));
+
+/** Getting the amount number of all user.
+  * @return {promise} Returning a promise object with the amount number of this user's reading.
+*/
+exports.fetchUsersAmount = () => promiseReturnResult(db => db
+  .collection(COLLECTION_USER)
+  .count({}));
