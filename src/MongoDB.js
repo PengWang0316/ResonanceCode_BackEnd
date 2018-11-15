@@ -689,10 +689,11 @@ exports.updateHexagram = hexagram => promiseInsertResult(db => {
 //     db.collection(COLLECTION_READINGS).find({ user_id, reading_name: new RegExp(`.*${keyWord}.*`, 'i') }, { _id: 1, reading_name: 1 }).sort({ date: -1 }).limit(10));
 
 /* checking whether user name is still available */
-exports.isUserNameAvailable = query => new Promise((resolve, reject) =>
-  connectToDb(db =>
-    db.collection(COLLECTION_USER)
-      .find({ username: query.userName }).next((err, result) => resolve(!result))));
+// Moved to the User model.
+// exports.isUserNameAvailable = query => new Promise((resolve, reject) =>
+//   connectToDb(db =>
+//     db.collection(COLLECTION_USER)
+//       .find({ username: query.userName }).next((err, result) => resolve(!result))));
 // (query, callback) => {
 //   connectToDb((db) => {
 //     db.collection(COLLECTION_USER).find({ username: query.userName }).next((err, result) => {

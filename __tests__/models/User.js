@@ -1,4 +1,5 @@
 import User from '../../src/models/User';
+import { RSA_PKCS1_OAEP_PADDING } from 'constants';
 
 const COLLECTION_USER = 'users';
 
@@ -12,6 +13,9 @@ jest.mock('../../src/MongoDBHelper', () => ({
     collection: mockCollection,
   })),
   promiseReturnResult: jest.fn().mockImplementation(callback => callback({
+    collection: mockCollection,
+  })),
+  promiseNextResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
 }));
@@ -43,5 +47,16 @@ describe('fetchAllUserList', () => {
     expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_USER);
     expect(mockCount).toHaveBeenCalledTimes(1);
     expect(mockCount).toHaveBeenLastCalledWith({});
+  });
+
+  test('isUserNameAvailable', () => {
+    const { promiseNextResult } = require('../../src/MongoDBHelper');
+    User.isUserNameAvailable({ userName: 'username' });
+
+    expect(promiseNextResult).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenCalledTimes(3);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_USER);
+    expect(mockFind).toHaveBeenCalledTimes(2);
+    expect(mockFind).toHaveBeenLastCalledWith({ username: 'username' });
   });
 });
