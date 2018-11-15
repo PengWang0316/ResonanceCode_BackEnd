@@ -466,27 +466,28 @@ exports.createJournal = (journal) => new Promise((resolve, reject) => {
 exports.getUnattachedJournalList = userId => promiseFindResult(db =>
   db.collection(COLLECTION_JOURNAL_ENTRIES).find({ user_id: userId }));
 
-/*  Get one journal  */
-exports.fetchJournal = ({ journalId, userId }) => new Promise((resolve, reject) => {
-  connectToDb((db) => {
-    db.collection(COLLECTION_READINGS).find({ user_id: userId, 'journal_entries._id': new mongodb.ObjectId(journalId) }, {
-      _id: 1, reading_name: 1, user_id: 1, journal_entries: 1
-    }).toArray((err, result) => {
-      // Getting all reading ids
-      if (err) reject(err);
-      const readingIds = {};
-      // let readingNames = [];
-      result.forEach((reading) => {
-        readingIds[reading._id] = reading.reading_name;
-      });
-      // Finding the right journal and attaching the reading ids array to it.
-      result[0].journal_entries.forEach(element => {
-        if (element._id.toString() === journalId)
-          resolve(Object.assign({ user_id: userId, readingIds }, element));
-      });
-    });
-  });
-});
+// /*  Get one journal  */
+// Moved to the Journal model.
+// exports.fetchJournal = ({ journalId, userId }) => new Promise((resolve, reject) => {
+//   connectToDb((db) => {
+//     db.collection(COLLECTION_READINGS).find({ user_id: userId, 'journal_entries._id': new mongodb.ObjectId(journalId) }, {
+//       _id: 1, reading_name: 1, user_id: 1, journal_entries: 1
+//     }).toArray((err, result) => {
+//       // Getting all reading ids
+//       if (err) reject(err);
+//       const readingIds = {};
+//       // let readingNames = [];
+//       result.forEach((reading) => {
+//         readingIds[reading._id] = reading.reading_name;
+//       });
+//       // Finding the right journal and attaching the reading ids array to it.
+//       result[0].journal_entries.forEach(element => {
+//         if (element._id.toString() === journalId)
+//           resolve(Object.assign({ user_id: userId, readingIds }, element));
+//       });
+//     });
+//   });
+// });
 
 /** Fetch a journal based on both journal and reading's id
   * @param {object} the param object contains journal's id, reading's id, and user's id.
@@ -506,9 +507,10 @@ exports.fetchJournalBasedOnReadingJournal = ({ journalId, readingId, userId }) =
     }));
 
 /*  Get one unattached journal  */
-exports.fetchUnattachedJournal = ({ journalId, userId }) =>
-  promiseNextResult(db => db.collection(COLLECTION_JOURNAL_ENTRIES)
-    .find({ _id: new mongodb.ObjectId(journalId), user_id: userId }));
+// Moved to the Journal Model
+// exports.fetchUnattachedJournal = ({ journalId, userId }) =>
+//   promiseNextResult(db => db.collection(COLLECTION_JOURNAL_ENTRIES)
+//     .find({ _id: new mongodb.ObjectId(journalId), user_id: userId }));
 
 /*  new Promise((resolve, reject) =>
   connectToDb(db => {
