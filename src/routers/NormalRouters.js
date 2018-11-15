@@ -30,7 +30,6 @@ const getJournal = require('./functions/GetJournal');
 const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
 const getSearchReadings = require('./functions/GetSearchReadings');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
-const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
@@ -43,6 +42,7 @@ const fetchUsersAmount = require('../controllers/FetchUsersAmount');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
+const isUserNameAvailable = require('../controllers/IsUserNameAvailable');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
 const fetchReadingsBasedOnName = require('../controllers/FetchReadingsBasedOnName');
@@ -132,7 +132,7 @@ normalRouter.post('/deleteJournal', postDeleteJournal);
 normalRouter.delete('/deleteUnAttachedJournal', deleteUnattachedJournal);
 
 /** Check whether user name is available */
-normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
+normalRouter.get('/isUserNameAvailable', isUserNameAvailable);
 
 // TODO: Should be removed eventually. Has already been moved to utils/GetReturnUserObject.js
 /** Get information from database's return and sign the user Object with jwt.
