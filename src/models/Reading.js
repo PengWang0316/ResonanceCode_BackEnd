@@ -82,6 +82,32 @@ const findHexagramImages = (readings, callback) => {
   });
 };
 
+/**
+ * Get one journal
+ * @param {object} object contains journalId and userId
+ * @return {promise} return a promise
+ */
+exports.fetchJournal = ({ journalId, userId }) => new Promise((resolve, reject) => {
+  getDB().collection(COLLECTION_READINGS).find({ user_id: userId, 'journal_entries._id': new ObjectId(journalId) }, {
+    _id: 1, reading_name: 1, user_id: 1, journal_entries: 1,
+  }).toArray((err, result) => {
+    // Getting all reading ids
+    if (err) reject(err);
+    const readingIds = {};
+    // let readingNames = [];
+    result.forEach((reading) => {
+      readingIds[reading._id] = reading.reading_name;
+    });
+    // Finding the right journal and attaching the reading ids array to it.
+    result[0].journal_entries.forEach(element => {
+      if (element._id.toString() === journalId) resolve({
+        user_id: userId, readingIds, ...element,
+      });
+    });
+  });
+});
+
+
 // Have not been tested
 /*  Get readings  */
 exports.fetchRecentReadings = (pageNumber, numberPerpage, userId) => new Promise((resolve, reject) => {

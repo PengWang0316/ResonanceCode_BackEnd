@@ -10,6 +10,9 @@ const mockLimit = jest.fn().mockReturnValue({ sort: mockSort });
 const mockSkip = jest.fn().mockReturnValue({ limit: mockLimit });
 const mockFind = jest.fn().mockReturnValue({ skip: mockSkip, sort: mockSort });
 const mockCount = jest.fn();
+const mockReturnReading = [{
+  _id: 'readingId', reading_name: 'readingName', journal_entries: [{ _id: new ObjectId('5b182e9138dbb7258cc39546') }],
+}];
 const mockCollection = jest.fn()
   .mockReturnValue({ deleteOne: mockDeleteOne, find: mockFind, count: mockCount });
 
@@ -26,7 +29,7 @@ jest.mock('../../src/MongoDBHelper', () => ({
   getDB: jest.fn().mockReturnValue({
     collection: jest.fn().mockReturnValue({
       find: jest.fn().mockReturnValue({
-        toArray: jest.fn(),
+        toArray: jest.fn().mockImplementation(callback => callback(null, mockReturnReading)),
       }),
     }),
   }),
@@ -98,6 +101,28 @@ describe('Reading Model', () => {
     expect(mockSort).toHaveBeenLastCalledWith({ date: -1 });
     expect(mockLimitB).toHaveBeenCalledTimes(1);
     expect(mockLimitB).toHaveBeenLastCalledWith(10);
+  });
+
+  test('fetchJournal', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    const result = await Reading.fetchJournal({ journalId: '5b182e9138dbb7258cc39546', userId: 'userId' });
+
+    expect(getDB).toHaveBeenCalledTimes(1);
+    expect(getDB().collection).toHaveBeenCalledTimes(1);
+    expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(getDB().collection().find).toHaveBeenCalledTimes(1);
+    expect(getDB().collection().find).toHaveBeenLastCalledWith(
+      { user_id: 'userId', 'journal_entries._id': new ObjectId('5b182e9138dbb7258cc39546') },
+      {
+        _id: 1, reading_name: 1, user_id: 1, journal_entries: 1,
+      },
+    );
+    expect(getDB().collection().find().toArray).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({
+      user_id: 'userId',
+      readingIds: { readingId: 'readingName' },
+      _id: new ObjectId('5b182e9138dbb7258cc39546'),
+    });
   });
 
   // test('fetchReadingsByHexagramId, with user id', async () => {
