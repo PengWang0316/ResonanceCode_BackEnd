@@ -26,13 +26,13 @@ const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
-const getJournal = require('./functions/GetJournal');
 const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
 const getSearchReadings = require('./functions/GetSearchReadings');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
+const getJournal = require('../controllers/FetchJournal');
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
 const fetchReadings = require('../controllers/FetchReadings');
