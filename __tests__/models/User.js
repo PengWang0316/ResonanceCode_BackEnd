@@ -6,9 +6,12 @@ const COLLECTION_USER = 'users';
 
 const mockLimit = jest.fn();
 const mockCount = jest.fn();
+const mockFindOneAndUpdate = jest.fn();
 const mockSkip = jest.fn().mockReturnValue({ limit: mockLimit });
 const mockFind = jest.fn().mockReturnValue({ skip: mockSkip });
-const mockCollection = jest.fn().mockReturnValue({ find: mockFind, count: mockCount });
+const mockCollection = jest.fn().mockReturnValue({
+  find: mockFind, count: mockCount, findOneAndUpdate: mockFindOneAndUpdate,
+});
 jest.mock('../../src/MongoDBHelper', () => ({
   promiseFindResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
@@ -116,6 +119,32 @@ describe('fetchAllUserList', () => {
         _id: 0,
         pushSubscriptions: 1,
       },
+    );
+  });
+
+  test('updateUser', () => {
+    const { promiseReturnResult } = require('../../src/MongoDBHelper');
+    User.updateUser('5b182e9138dbb7258cc39546', 'user', 'removeFields');
+
+    expect(promiseReturnResult).toHaveBeenCalledTimes(2);
+    expect(mockCollection).toHaveBeenCalledTimes(5);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_USER);
+    expect(mockFindOneAndUpdate).toHaveBeenCalledTimes(1);
+    expect(mockFindOneAndUpdate).toHaveBeenLastCalledWith(
+      { _id: new ObjectId('5b182e9138dbb7258cc39546') },
+      { $set: 'user', $unset: 'removeFields' },
+      { returnOriginal: false, projection: { pushSubscription: 0 } },
+    );
+  });
+
+  test('updateUser without removeFields', () => {
+    const { promiseReturnResult } = require('../../src/MongoDBHelper');
+    User.updateUser('5b182e9138dbb7258cc39546', 'user', null);
+
+    expect(mockFindOneAndUpdate).toHaveBeenLastCalledWith(
+      { _id: new ObjectId('5b182e9138dbb7258cc39546') },
+      { $set: 'user' },
+      { returnOriginal: false, projection: { pushSubscription: 0 } },
     );
   });
 });

@@ -738,13 +738,14 @@ exports.createNewUser = (user, callback) => {
   * @param {object} removeFields is an object that contains the fields will be removed from the database.
   * @returns {Promise} Return a promise object with new user information.
 */
-exports.updateUser = (userId, user, removeFields) => promiseReturnResult(db =>
-  db.collection(COLLECTION_USER)
-    .findOneAndUpdate(
-      { _id: new mongodb.ObjectId(userId) },
-      removeFields ? { $set: user, $unset: removeFields } : { $set: user },
-      { returnOriginal: false, projection: { pushSubscription: 0 } }
-    ));
+// Moved to the User model.
+// exports.updateUser = (userId, user, removeFields) => promiseReturnResult(db =>
+//   db.collection(COLLECTION_USER)
+//     .findOneAndUpdate(
+//       { _id: new mongodb.ObjectId(userId) },
+//       removeFields ? { $set: user, $unset: removeFields } : { $set: user },
+//       { returnOriginal: false, projection: { pushSubscription: 0 } }
+//     ));
 
 /** Remove a user group from user's database.
   * @param {object} param contains user's id and the name of group will be deleted.

@@ -51,4 +51,18 @@ exports.fetchUsersPushSubscriptions = userIds => promiseFindResult(db => {
     .find({ _id: { $in: userIdsObject }, 'settings.isPushNotification': true }, { _id: 0, pushSubscriptions: 1 });
 });
 
+/** Update a user's information.
+  * @param {string} userId is the id of a user.
+  * @param {object} user is the object that contains the new information of the use.
+  * @param {object} removeFields is an object that contains the fields will be removed from the database.
+  * @returns {Promise} Return a promise object with new user information.
+*/
+exports.updateUser = (userId, user, removeFields) => promiseReturnResult(db => db
+  .collection(COLLECTION_USER)
+  .findOneAndUpdate(
+    { _id: new ObjectId(userId) },
+    removeFields ? { $set: user, $unset: removeFields } : { $set: user },
+    { returnOriginal: false, projection: { pushSubscription: 0 } },
+  ));
+
 // new Promise((resolve, reject) => connectToDb(db => db.collection(COLLECTION_USER).find({ username: query.userName }).next((err, result) => resolve(!result))));
