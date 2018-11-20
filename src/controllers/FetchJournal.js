@@ -9,5 +9,8 @@ module.exports = (req, res) => {
   const fetchPromise = isUnattachedJournal
     ? fetchUnattachedJournal({ journalId, userId: user._id })
     : fetchJournal({ journalId, userId: user._id });
-  return fetchPromise.then(result => res.json(result)).catch(err => logger.error('/journal', err));
+  return fetchPromise.then(result => res.json(result)).catch(err => {
+    logger.error('/journal', err);
+    res.end();
+  });
 };

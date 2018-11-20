@@ -45,7 +45,8 @@ describe('FetchJournal', () => {
 
   test('fetchJournal attached journal with error', async () => {
     const mockJsonFn = jest.fn();
-    const res = { json: mockJsonFn };
+    const mockEnd = jest.fn();
+    const res = { json: mockJsonFn, end: mockEnd };
     const req = { query: { jwtMessage: 'message', journalId: 'journalId', isUnattachedJournal: false } };
     const verifyJWT = require('../../src/utils/VerifyJWT');
     const { fetchUnattachedJournal } = require('../../src/models/Journal');
@@ -61,5 +62,6 @@ describe('FetchJournal', () => {
     expect(fetchUnattachedJournal).toHaveBeenCalledTimes(1);
     expect(fetchJournal).toHaveBeenCalledTimes(2);
     expect(error).toHaveBeenCalledTimes(1);
+    expect(mockEnd).toHaveBeenCalledTimes(1);
   });
 });
