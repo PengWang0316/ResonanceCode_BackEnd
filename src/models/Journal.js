@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 
-const { promiseInsertResult, promiseNextResult } = require('../MongoDBHelper');
+const { promiseInsertResult, promiseNextResult, promiseFindResult } = require('../MongoDBHelper');
 
 const COLLECTION_JOURNAL_ENTRIES = 'journal_entries';
 
@@ -13,3 +13,8 @@ exports.deleteUnattachedJournal = ({ journalId, userId }) => promiseInsertResult
 exports.fetchUnattachedJournal = ({ journalId, userId }) => promiseNextResult(db => db
   .collection(COLLECTION_JOURNAL_ENTRIES)
   .find({ _id: new ObjectId(journalId), user_id: userId }));
+
+/* Get unattached journal list */
+exports.fetchUnattachedJournalList = userId => promiseFindResult(db => db
+  .collection(COLLECTION_JOURNAL_ENTRIES)
+  .find({ user_id: userId }));

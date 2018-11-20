@@ -466,9 +466,10 @@ exports.createJournal = (journal) => new Promise((resolve, reject) => {
 //   return db.collection(COLLECTION_READINGS).find(query, { journal_entries: 1 });
 // });
 
-/* Get unattached journal list */
-exports.getUnattachedJournalList = userId => promiseFindResult(db =>
-  db.collection(COLLECTION_JOURNAL_ENTRIES).find({ user_id: userId }));
+// /* Get unattached journal list */
+//  Moved to the Journal model.
+// exports.getUnattachedJournalList = userId => promiseFindResult(db =>
+//   db.collection(COLLECTION_JOURNAL_ENTRIES).find({ user_id: userId }));
 
 // /*  Get one journal  */
 // Moved to the Journal model.

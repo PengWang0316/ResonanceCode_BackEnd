@@ -12,6 +12,9 @@ jest.mock('../../src/MongoDBHelper', () => ({
   promiseNextResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
+  promiseFindResult: jest.fn().mockImplementation(callback => callback({
+    collection: mockCollection,
+  })),
 }));
 
 describe('Journal Model', () => {
@@ -35,5 +38,16 @@ describe('Journal Model', () => {
     expect(mockCollection).toHaveBeenLastCalledWith('journal_entries');
     expect(mockFind).toHaveBeenCalledTimes(1);
     expect(mockFind).toHaveBeenLastCalledWith({ _id: new ObjectId('5b182e9138dbb7258cc39547'), user_id: 'userId' });
+  });
+
+  test('fetchUnattachedJournalList', () => {
+    const { promiseFindResult } = require('../../src/MongoDBHelper');
+    Journal.fetchUnattachedJournalList('userId');
+
+    expect(promiseFindResult).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenCalledTimes(3);
+    expect(mockCollection).toHaveBeenLastCalledWith('journal_entries');
+    expect(mockFind).toHaveBeenCalledTimes(2);
+    expect(mockFind).toHaveBeenLastCalledWith({ user_id: 'userId' });
   });
 });
