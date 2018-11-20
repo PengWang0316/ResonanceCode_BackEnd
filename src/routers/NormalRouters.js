@@ -20,7 +20,6 @@ const { NORMAL_ROLE } = process.env;
 const mongodb = require('../MongoDB');
 
 // Functions import
-const getJwtMessageVerify = require('./functions/GetJwtMessageVerify');
 const postReading = require('./functions/PostReading');
 const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
@@ -39,6 +38,7 @@ const fetchHexagrams = require('../controllers/FetchHexagrams');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
 const fetchUsersAmount = require('../controllers/FetchUsersAmount');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
+const fetchJwtMessageVerify = require('../controllers/FetchJwtMessageVerify');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
 const isUserNameAvailable = require('../controllers/IsUserNameAvailable');
@@ -72,7 +72,7 @@ cloudinary.config({ // confige the cloudinary library.
 // });
 
 /* Checking jwt token */
-normalRouter.get('/jwtMessageVerify', getJwtMessageVerify);
+normalRouter.get('/jwtMessageVerify', fetchJwtMessageVerify);
 
 /** ********************  Create a new reading  *************************** */
 normalRouter.post('/reading', postReading);
