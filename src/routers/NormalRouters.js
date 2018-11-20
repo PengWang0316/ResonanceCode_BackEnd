@@ -20,14 +20,14 @@ const { NORMAL_ROLE } = process.env;
 const mongodb = require('../MongoDB');
 
 // Functions import
-const postReading = require('./functions/PostReading');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
-const createJournal = require('../controllers/CreateJournal');
 const getJournal = require('../controllers/FetchJournal');
+const createReading = require('../controllers/CreateReading');
+const createJournal = require('../controllers/CreateJournal');
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
 const fetchReadings = require('../controllers/FetchReadings');
@@ -75,7 +75,7 @@ cloudinary.config({ // confige the cloudinary library.
 normalRouter.get('/jwtMessageVerify', fetchJwtMessageVerify);
 
 /** ********************  Create a new reading  *************************** */
-normalRouter.post('/reading', postReading);
+normalRouter.post('/reading', createReading);
 
 /** ********************  Create a new journal  *************************** */
 normalRouter.post('/journal', createJournal);
