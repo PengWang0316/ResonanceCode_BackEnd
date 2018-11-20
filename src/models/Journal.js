@@ -18,3 +18,12 @@ exports.fetchUnattachedJournal = ({ journalId, userId }) => promiseNextResult(db
 exports.fetchUnattachedJournalList = userId => promiseFindResult(db => db
   .collection(COLLECTION_JOURNAL_ENTRIES)
   .find({ user_id: userId }));
+
+/*  Create a new journal  */
+exports.createJournal = journal => promiseInsertResult(db => {
+  const internalJournal = { ...journal }; // Using a copy to work.
+  internalJournal.date = new Date(internalJournal.date);
+  internalJournal._id = new ObjectId();
+  delete internalJournal.readings;
+  return db.collection(COLLECTION_JOURNAL_ENTRIES).insert(internalJournal);
+});

@@ -59,6 +59,24 @@ exports.deleteJournal = ({ journalId, readingIds, userId }) => promiseInsertResu
     { multi: true },
   ));
 
+/*  Create a new journal  */
+exports.createJournal = journal => promiseInsertResult(db => {
+  const internalJournal = { ...journal }; // Using a copy to work.
+  internalJournal.date = new Date(internalJournal.date);
+  internalJournal._id = new ObjectId();
+
+  const readingObjectIdArray = [];
+  Object.keys(internalJournal.readings).forEach((element) => {
+    readingObjectIdArray.push(new ObjectId(element));
+  });
+  // let readings = Object.assign({}, journal.readings);
+  internalJournal.pingPongStates = internalJournal.readings; // Changing the name to poingPongStates
+  delete internalJournal.readings;
+  return db.collection(COLLECTION_READINGS).update({ _id: { $in: readingObjectIdArray } }, {
+    $push: { journal_entries: internalJournal },
+  }, { multi: true });
+});
+
 /* ************  The code below is not tested since it will be refactored with Redux to improve the performence. ************** */
 /* Working with method below to execute the callback function when all hexagram are fetched. */
 const checkHexagramImageReadAndCallback = (checkNumber, targetNumber, callback, result) => {
