@@ -1,4 +1,8 @@
-const { promiseFindResult, promiseReturnResult, promiseNextResult } = require('../MongoDBHelper');
+const { ObjectId } = require('mongodb');
+
+const {
+  promiseFindResult, promiseReturnResult, promiseNextResult, getDB,
+} = require('../MongoDBHelper');
 
 const COLLECTION_USER = 'users';
 
@@ -27,5 +31,14 @@ exports.fetchUsersAmount = () => promiseReturnResult(db => db
  */
 exports.isUserNameAvailable = query => promiseNextResult(db => db
   .collection(COLLECTION_USER).find({ username: query.userName }));
+
+exports.fetchOneUser = userId => new Promise((reslove, reject) => getDB()
+  .collection(COLLECTION_USER)
+  .findOne({ _id: new ObjectId(userId) }, {
+    pushSubscriptions: 0, facebookId: 0, googleId: 0, email: 0,
+  }).then((result, err) => {
+    if (err) reject(err);
+    reslove(result);
+  }));
 
 // new Promise((resolve, reject) => connectToDb(db => db.collection(COLLECTION_USER).find({ username: query.userName }).next((err, result) => resolve(!result))));

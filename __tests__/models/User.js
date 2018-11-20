@@ -1,5 +1,6 @@
+import { ObjectId } from 'mongodb';
+
 import User from '../../src/models/User';
-import { RSA_PKCS1_OAEP_PADDING } from 'constants';
 
 const COLLECTION_USER = 'users';
 
@@ -18,6 +19,13 @@ jest.mock('../../src/MongoDBHelper', () => ({
   promiseNextResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
+  getDB: jest.fn().mockReturnValue({
+    collection: jest.fn().mockReturnValue({
+      findOne: jest.fn().mockReturnValue({
+        then: jest.fn().mockImplementation(callback => callback('result', null)),
+      }),
+    }),
+  }),
 }));
 
 describe('fetchAllUserList', () => {
@@ -58,5 +66,36 @@ describe('fetchAllUserList', () => {
     expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_USER);
     expect(mockFind).toHaveBeenCalledTimes(2);
     expect(mockFind).toHaveBeenLastCalledWith({ username: 'username' });
+  });
+
+  test('fetchOneUser', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    await expect(User.fetchOneUser('5b182e9138dbb7258cc39546')).resolves.toEqual('result');
+    // await User.fetchOneUser('5b182e9138dbb7258cc39546');
+
+    expect(getDB).toHaveBeenCalledTimes(1);
+    expect(getDB().collection).toHaveBeenCalledTimes(1);
+    expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_USER);
+    expect(getDB().collection().findOne).toHaveBeenCalledTimes(1);
+    expect(getDB().collection().findOne).toHaveBeenLastCalledWith(
+      { _id: new ObjectId('5b182e9138dbb7258cc39546') },
+      {
+        pushSubscriptions: 0, facebookId: 0, googleId: 0, email: 0,
+      },
+    );
+    expect(getDB().collection().findOne().then).toHaveBeenCalledTimes(1);
+  });
+
+  test('fetchOneUser with error', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    getDB.mockReturnValueOnce({
+      collection: jest.fn().mockReturnValue({
+        findOne: jest.fn().mockReturnValue({
+          then: jest.fn().mockImplementation(callback => callback('result', true)),
+        }),
+      }),
+    });
+
+    await expect(User.fetchOneUser('5b182e9138dbb7258cc39546')).rejects.toEqual(true);
   });
 });

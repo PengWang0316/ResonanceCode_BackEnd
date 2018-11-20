@@ -853,14 +853,15 @@ exports.fetchReadingBasedOnId = ({ readingId, userId }) => new Promise((resolve,
       _id: new mongodb.ObjectId(readingId), user_id: userId
     }, { journal_entries: 1 }).then(result => resolve(result))));
 
-exports.fetchOneUser = userId => new Promise((reslove, reject) =>
-  connectToDb(db => db.collection(COLLECTION_USER)
-    .findOne({ _id: new mongodb.ObjectId(userId) }, {
-      pushSubscriptions: 0, facebookId: 0, googleId: 0, email: 0
-    }).then((result, err) => {
-      if (err) reject(err);
-      reslove(result);
-    })));
+// Moved to the User model.
+// exports.fetchOneUser = userId => new Promise((reslove, reject) =>
+//   connectToDb(db => db.collection(COLLECTION_USER)
+//     .findOne({ _id: new mongodb.ObjectId(userId) }, {
+//       pushSubscriptions: 0, facebookId: 0, googleId: 0, email: 0
+//     }).then((result, err) => {
+//       if (err) reject(err);
+//       reslove(result);
+//     })));
 
 //
 // exports.fetchReadingBasedOnId = ({ readingId, userId }) => promiseReturnResult(db => {
