@@ -50,6 +50,15 @@ exports.fetchReadingsBaseOnName = ({ user_id, keyWord }) => promiseFindResult(db
   .sort({ date: -1 })
   .limit(10));
 
+/*  Delete one journal  */
+exports.deleteJournal = ({ journalId, readingIds, userId }) => promiseInsertResult(db => db
+  .collection(COLLECTION_READINGS)
+  .update(
+    { _id: { $in: readingIds.map((id) => new ObjectId(id)) }, user_id: userId },
+    { $pull: { journal_entries: { _id: new ObjectId(journalId) } } },
+    { multi: true },
+  ));
+
 /* ************  The code below is not tested since it will be refactored with Redux to improve the performence. ************** */
 /* Working with method below to execute the callback function when all hexagram are fetched. */
 const checkHexagramImageReadAndCallback = (checkNumber, targetNumber, callback, result) => {
@@ -180,14 +189,14 @@ function searchForReadings(query, callback, results) {
     const endDate = new Date(query.endDate);
     endDate.setDate(endDate.getDate() + 1);
     queryArray.push({
-      $and: [{ date: { $gte: new Date(query.startDate) } }, { date: { $lt: new Date(endDate) } }]
+      $and: [{ date: { $gte: new Date(query.startDate) } }, { date: { $lt: new Date(endDate) } }],
     });
   } else if (query.startDate) {
     /* If just one date is given, set the search criteria between that day's 00:00 to next day's 00:00 */
     const endDate = new Date(query.startDate);
     endDate.setDate(endDate.getDate() + 1);
     queryArray.push({
-      $and: [{ date: { $gte: new Date(query.startDate) } }, { date: { $lt: endDate } }]
+      $and: [{ date: { $gte: new Date(query.startDate) } }, { date: { $lt: endDate } }],
     });
   }
   if (queryArray.length === 0) queryArray.push({}); // if no one searching criteria was given, give a empty array to query, which will pull out all readings.

@@ -529,13 +529,14 @@ exports.createJournal = (journal) => new Promise((resolve, reject) => {
   })); */
 
 /*  Delete one journal  */
-exports.deleteJournal = ({ journalId, readingIds, userId }) =>
-  promiseInsertResult(db => db.collection(COLLECTION_READINGS)
-    .update(
-      { _id: { $in: readingIds.map((id) => new mongodb.ObjectId(id)) }, user_id: userId },
-      { $pull: { journal_entries: { _id: new mongodb.ObjectId(journalId) } } },
-      { multi: true }
-    ));
+// Moved to the Reading model.
+// exports.deleteJournal = ({ journalId, readingIds, userId }) =>
+//   promiseInsertResult(db => db.collection(COLLECTION_READINGS)
+//     .update(
+//       { _id: { $in: readingIds.map((id) => new mongodb.ObjectId(id)) }, user_id: userId },
+//       { $pull: { journal_entries: { _id: new mongodb.ObjectId(journalId) } } },
+//       { multi: true }
+//     ));
 
 /*  Delete one unattached journal  */
 // Moved to the Journal model.

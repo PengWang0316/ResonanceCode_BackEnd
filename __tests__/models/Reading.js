@@ -5,6 +5,7 @@ import Reading from '../../src/models/Reading';
 const COLLECTION_READINGS = 'readings';
 const mockDeleteOne = jest.fn();
 const mockLimitB = jest.fn();
+const mockUpdate = jest.fn();
 const mockSort = jest.fn().mockReturnValue({ limit: mockLimitB });
 const mockLimit = jest.fn().mockReturnValue({ sort: mockSort });
 const mockSkip = jest.fn().mockReturnValue({ limit: mockLimit });
@@ -14,7 +15,9 @@ const mockReturnReading = [{
   _id: 'readingId', reading_name: 'readingName', journal_entries: [{ _id: new ObjectId('5b182e9138dbb7258cc39546') }],
 }];
 const mockCollection = jest.fn()
-  .mockReturnValue({ deleteOne: mockDeleteOne, find: mockFind, count: mockCount });
+  .mockReturnValue({
+    deleteOne: mockDeleteOne, find: mockFind, count: mockCount, update: mockUpdate,
+  });
 
 jest.mock('../../src/MongoDBHelper', () => ({
   promiseInsertResult: jest.fn().mockImplementation(callback => callback({
@@ -159,16 +162,29 @@ describe('Reading Model', () => {
         }),
       }),
     });
-    // try {
-    //   await Reading.fetchJournalBasedOnReadingJournal({
-    //     journalId: 'journalId', readingId: '5b182e9138dbb7258cc39546', userId: 'userId',
-    //   });
-    // } catch (err) {console.log(err);
-    //   expect(err).toEqual({a: 1});
-    // }
+
     await expect(Reading.fetchJournalBasedOnReadingJournal({
       journalId: 'journalId', readingId: '5b182e9138dbb7258cc39546', userId: 'userId',
     })).rejects.toEqual(true);
+  });
+
+  test('deleteJournal', () => {
+    const { promiseInsertResult } = require('../../src/MongoDBHelper');
+    Reading.deleteJournal({
+      journalId: '5b182e9138dbb7258cc39546',
+      readingIds: ['5b182e9138dbb7258cc39541', '5b182e9138dbb7258cc39542'],
+      userId: 'userId',
+    });
+
+    expect(promiseInsertResult).toHaveBeenCalledTimes(2);
+    expect(mockCollection).toHaveBeenCalledTimes(7);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+    expect(mockUpdate).toHaveBeenLastCalledWith(
+      { _id: { $in: [new ObjectId('5b182e9138dbb7258cc39541'), new ObjectId('5b182e9138dbb7258cc39542')] }, user_id: 'userId' },
+      { $pull: { journal_entries: { _id: new ObjectId('5b182e9138dbb7258cc39546') } } },
+      { multi: true },
+    );
   });
 
   // test('fetchReadingsByHexagramId, with user id', async () => {
