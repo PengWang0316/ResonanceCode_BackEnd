@@ -24,7 +24,6 @@ const postReading = require('./functions/PostReading');
 const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
-const postDeleteJournal = require('./functions/PostDeleteJournal');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
@@ -32,6 +31,7 @@ const getJournal = require('../controllers/FetchJournal');
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
 const fetchReadings = require('../controllers/FetchReadings');
+const deleteJournal = require('../controllers/DeleteJournal');
 const fetchHexagrams = require('../controllers/FetchHexagrams');
 const searchReadings = require('../controllers/SearchReadings');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
@@ -126,7 +126,7 @@ normalRouter.get('/fetchReadingsBasedOnName', fetchReadingsBasedOnName);
 normalRouter.delete('/deleteReading', deleteReading);
 
 /** *****************  Delete one journal   ************************ */
-normalRouter.post('/deleteJournal', postDeleteJournal);
+normalRouter.post('/deleteJournal', deleteJournal);
 
 /** Delete one unattached journal */
 normalRouter.delete('/deleteUnAttachedJournal', deleteUnattachedJournal);
