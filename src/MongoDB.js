@@ -493,18 +493,19 @@ exports.getUnattachedJournalList = userId => promiseFindResult(db =>
   * @param {object} the param object contains journal's id, reading's id, and user's id.
   * @return {Promise} Return a promise to the caller.
 */
-exports.fetchJournalBasedOnReadingJournal = ({ journalId, readingId, userId }) =>
-  new Promise((resolve, reject) =>
-    connectToDb(db => {
-      db.collection(COLLECTION_READINGS)
-        .findOne({ _id: new mongodb.ObjectId(readingId), user_id: userId }, { journal_entries: 1 })
-        .then((result, err) => {
-          if (err) reject(err);
-          else result.journal_entries.forEach(journal => {
-            if (journal._id.toString() === journalId) resolve(journal);
-          });
-        });
-    }));
+// Moved to the Reading model
+// exports.fetchJournalBasedOnReadingJournal = ({ journalId, readingId, userId }) =>
+//   new Promise((resolve, reject) =>
+//     connectToDb(db => {
+//       db.collection(COLLECTION_READINGS)
+//         .findOne({ _id: new mongodb.ObjectId(readingId), user_id: userId }, { journal_entries: 1 })
+//         .then((result, err) => {
+//           if (err) reject(err);
+//           else result.journal_entries.forEach(journal => {
+//             if (journal._id.toString() === journalId) resolve(journal);
+//           });
+//         });
+//     }));
 
 /*  Get one unattached journal  */
 // Moved to the Journal Model

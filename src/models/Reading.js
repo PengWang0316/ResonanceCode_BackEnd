@@ -107,6 +107,22 @@ exports.fetchJournal = ({ journalId, userId }) => new Promise((resolve, reject) 
   });
 });
 
+/** Fetch a journal based on both journal and reading's id
+  * @param {object} the param object contains journal's id, reading's id, and user's id.
+  * @return {Promise} Return a promise to the caller.
+*/
+exports.fetchJournalBasedOnReadingJournal = ({
+  journalId, readingId, userId,
+}) => new Promise((resolve, reject) => getDB()
+  .collection(COLLECTION_READINGS)
+  .findOne({ _id: new ObjectId(readingId), user_id: userId }, { journal_entries: 1 })
+  .then((result, err) => {
+    if (err) reject(err);
+    else result.journal_entries.forEach(journal => {
+      if (journal._id.toString() === journalId) resolve(journal);
+    });
+  }));
+
 
 // Have not been tested
 /*  Get readings  */

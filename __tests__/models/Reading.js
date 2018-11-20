@@ -31,6 +31,11 @@ jest.mock('../../src/MongoDBHelper', () => ({
       find: jest.fn().mockReturnValue({
         toArray: jest.fn().mockImplementation(callback => callback(null, mockReturnReading)),
       }),
+      findOne: jest.fn().mockReturnValue({
+        then: jest.fn().mockImplementation(callback => callback({
+          journal_entries: [{ _id: 'journalId' }],
+        }, null)),
+      }),
     }),
   }),
 }));
@@ -123,6 +128,47 @@ describe('Reading Model', () => {
       readingIds: { readingId: 'readingName' },
       _id: new ObjectId('5b182e9138dbb7258cc39546'),
     });
+  });
+
+  test('fetchJournalBasedOnReadingJournal without error', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    const result = await Reading.fetchJournalBasedOnReadingJournal({
+      journalId: 'journalId', readingId: '5b182e9138dbb7258cc39546', userId: 'userId',
+    });
+
+    expect(getDB).toHaveBeenCalledTimes(7);
+    expect(getDB().collection).toHaveBeenCalledTimes(5);
+    expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(getDB().collection().findOne).toHaveBeenCalledTimes(1);
+    expect(getDB().collection().findOne).toHaveBeenLastCalledWith(
+      { _id: new ObjectId('5b182e9138dbb7258cc39546'), user_id: 'userId' },
+      { journal_entries: 1 },
+    );
+    expect(getDB().collection().findOne().then).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({ _id: 'journalId' });
+  });
+
+  test('fetchJournalBasedOnReadingJournal with error', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    getDB.mockReturnValueOnce({
+      collection: jest.fn().mockReturnValue({
+        findOne: jest.fn().mockReturnValue({
+          then: jest.fn().mockImplementation(callback => callback({
+            journal_entries: [{ _id: 'journalId' }],
+          }, true)),
+        }),
+      }),
+    });
+    // try {
+    //   await Reading.fetchJournalBasedOnReadingJournal({
+    //     journalId: 'journalId', readingId: '5b182e9138dbb7258cc39546', userId: 'userId',
+    //   });
+    // } catch (err) {console.log(err);
+    //   expect(err).toEqual({a: 1});
+    // }
+    await expect(Reading.fetchJournalBasedOnReadingJournal({
+      journalId: 'journalId', readingId: '5b182e9138dbb7258cc39546', userId: 'userId',
+    })).rejects.toEqual(true);
   });
 
   // test('fetchReadingsByHexagramId, with user id', async () => {
