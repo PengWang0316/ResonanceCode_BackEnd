@@ -687,12 +687,13 @@ exports.getHexagrams = query =>
 // };
 
 /* Update a hexagram */
-exports.updateHexagram = hexagram => promiseInsertResult(db => {
-  const newHexagram = Object.assign({}, hexagram);
-  delete newHexagram._id;
-  return db.collection(COLLECTION_HEXAGRAMS)
-    .update({ _id: new mongodb.ObjectId(hexagram._id) }, { $set: newHexagram });
-});
+// Moved to the Hexagram model.
+// exports.updateHexagram = hexagram => promiseInsertResult(db => {
+//   const newHexagram = Object.assign({}, hexagram);
+//   delete newHexagram._id;
+//   return db.collection(COLLECTION_HEXAGRAMS)
+//     .update({ _id: new mongodb.ObjectId(hexagram._id) }, { $set: newHexagram });
+// });
 
 /* Getting readings by searching name */
 // Moved to the Reading model

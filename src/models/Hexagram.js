@@ -1,6 +1,8 @@
 const { ObjectId } = require('mongodb');
 
-const { promiseFindResult, promiseNextResult, getDB } = require('../MongoDBHelper');
+const {
+  promiseFindResult, promiseNextResult, getDB, promiseInsertResult,
+} = require('../MongoDBHelper');
 
 const COLLECTION_HEXAGRAMS = 'hexagrams';
 
@@ -38,4 +40,12 @@ exports.findHexagramImagesForReading = reading => new Promise((resolve, reject) 
           resolve(returnReading);
         });
     });
+});
+
+/* Update a hexagram */
+exports.updateHexagram = hexagram => promiseInsertResult(db => {
+  const newHexagram = { ...hexagram };
+  delete newHexagram._id;
+  return db.collection(COLLECTION_HEXAGRAMS)
+    .update({ _id: new ObjectId(hexagram._id) }, { $set: newHexagram });
 });

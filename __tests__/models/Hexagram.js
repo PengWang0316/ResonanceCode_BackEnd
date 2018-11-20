@@ -4,12 +4,16 @@ import Hexagram from '../../src/models/Hexagram';
 
 const COLLECTION_HEXAGRAMS = 'hexagrams';
 const mockFind = jest.fn();
-const mockCollection = jest.fn().mockReturnValue({ find: mockFind });
+const mockUpdate = jest.fn();
+const mockCollection = jest.fn().mockReturnValue({ find: mockFind, update: mockUpdate });
 jest.mock('../../src/MongoDBHelper', () => ({
   promiseFindResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
   promiseNextResult: jest.fn().mockImplementation(callback => callback({
+    collection: mockCollection,
+  })),
+  promiseInsertResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
   getDB: jest.fn().mockReturnValue({
@@ -132,5 +136,16 @@ describe('Hexagram model', () => {
     expect(getDB().collection().find).toHaveBeenNthCalledWith(1, { img_arr: reading.hexagram_arr_1 });
     expect(getDB().collection().find).toHaveBeenNthCalledWith(2, { img_arr: reading.hexagram_arr_2 });
     expect(getDB().collection().find().next).toHaveBeenCalledTimes(2);
+  });
+
+  test('updateHexagram', () => {
+    const { promiseInsertResult } = require('../../src/MongoDBHelper');
+    Hexagram.updateHexagram({ _id: '5b182e9138dbb7258cc39547', other: true });
+
+    expect(promiseInsertResult).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenCalledTimes(13);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_HEXAGRAMS);
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+    expect(mockUpdate).toHaveBeenLastCalledWith({ _id: new ObjectId('5b182e9138dbb7258cc39547') }, { $set: { other: true } });
   });
 });
