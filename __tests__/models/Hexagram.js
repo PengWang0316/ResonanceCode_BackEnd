@@ -12,6 +12,13 @@ jest.mock('../../src/MongoDBHelper', () => ({
   promiseNextResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
   })),
+  getDB: jest.fn().mockReturnValue({
+    collection: jest.fn().mockReturnValue({
+      find: jest.fn().mockReturnValue({
+        next: jest.fn().mockImplementation(callback => callback(null, 'imgInfo')),
+      }),
+    }),
+  }),
 }));
 
 describe('Hexagram model', () => {
@@ -106,5 +113,24 @@ describe('Hexagram model', () => {
     expect(promiseNextResult).toHaveBeenCalledTimes(1);
     expect(mockCollection).toHaveBeenCalledTimes(12);
     expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_HEXAGRAMS);
+  });
+
+  test('findHexagramImagesForReading', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    const reading = { hexagram_arr_1: 'arr1', hexagram_arr_2: 'arr2' };
+    await expect(Hexagram.findHexagramImagesForReading(reading)).resolves.toEqual({
+      hexagram_arr_1: 'arr1',
+      hexagram_arr_2: 'arr2',
+      img1Info: 'imgInfo',
+      img2Info: 'imgInfo',
+    });
+
+    expect(getDB).toHaveBeenCalledTimes(2);
+    expect(getDB().collection).toHaveBeenCalledTimes(2);
+    expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_HEXAGRAMS);
+    expect(getDB().collection().find).toHaveBeenCalledTimes(2);
+    expect(getDB().collection().find).toHaveBeenNthCalledWith(1, { img_arr: reading.hexagram_arr_1 });
+    expect(getDB().collection().find).toHaveBeenNthCalledWith(2, { img_arr: reading.hexagram_arr_2 });
+    expect(getDB().collection().find().next).toHaveBeenCalledTimes(2);
   });
 });

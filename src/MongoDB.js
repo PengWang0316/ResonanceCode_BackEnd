@@ -138,22 +138,23 @@ exports.fetchOrCreateUser = user => promiseReturnResult(db =>
     { upsert: true, returnNewDocument: true }
   ));
 */
-exports.findHexagramImagesForReading = reading => new Promise((resolve, reject) => {
-  const returnReading = Object.assign({}, reading);
-  connectToDb(db => {
-    db.collection(COLLECTION_HEXAGRAMS).find({ img_arr: reading.hexagram_arr_1 })
-      .next((err1, img1Info) => {
-        returnReading.img1Info = img1Info;
-        connectToDb(db2 => {
-          db2.collection(COLLECTION_HEXAGRAMS).find({ img_arr: reading.hexagram_arr_2 })
-            .next((err2, img2Info) => {
-              returnReading.img2Info = img2Info;
-              resolve(returnReading);
-            });
-        });
-      });
-  });
-});
+// Moved to the Hexagram model.
+// exports.findHexagramImagesForReading = reading => new Promise((resolve, reject) => {
+//   const returnReading = Object.assign({}, reading);
+//   connectToDb(db => {
+//     db.collection(COLLECTION_HEXAGRAMS).find({ img_arr: reading.hexagram_arr_1 })
+//       .next((err1, img1Info) => {
+//         returnReading.img1Info = img1Info;
+//         connectToDb(db2 => {
+//           db2.collection(COLLECTION_HEXAGRAMS).find({ img_arr: reading.hexagram_arr_2 })
+//             .next((err2, img2Info) => {
+//               returnReading.img2Info = img2Info;
+//               resolve(returnReading);
+//             });
+//         });
+//       });
+//   });
+// });
 /* Code below is old version */
 
 /* Login get user information */
