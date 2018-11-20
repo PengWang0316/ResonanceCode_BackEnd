@@ -25,7 +25,6 @@ const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
-const getSearchReadings = require('./functions/GetSearchReadings');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
@@ -35,6 +34,7 @@ const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
 const fetchReadings = require('../controllers/FetchReadings');
 const fetchHexagrams = require('../controllers/FetchHexagrams');
+const searchReadings = require('../controllers/SearchReadings');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
 const fetchUsersAmount = require('../controllers/FetchUsersAmount');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
@@ -114,7 +114,7 @@ normalRouter.get('/fetchHexagramBasedOnImg', FetchHexagramBasedOnImg);
 normalRouter.get('/fetchReadingsBaseOnHexagram', fetchReadingsBasedOnHexagram);
 
 /** *********  Fetching readings by searching criterias ************ */
-normalRouter.get('/searchReadings', getSearchReadings);
+normalRouter.get('/searchReadings', searchReadings);
 
 /** Fetching the reading list */
 normalRouter.get('/fetchAllReadingList', fetchAllReadingList);
