@@ -41,4 +41,14 @@ exports.fetchOneUser = userId => new Promise((reslove, reject) => getDB()
     reslove(result);
   }));
 
+/** Fetching user's PushSubscriptions
+  * @param {array} userIds is an array that contains users' ids.
+  * @return {promise} Return a promise with users' information (just pushSubscription include).
+*/
+exports.fetchUsersPushSubscriptions = userIds => promiseFindResult(db => {
+  const userIdsObject = userIds.map(id => new ObjectId(id));
+  return db.collection(COLLECTION_USER)
+    .find({ _id: { $in: userIdsObject }, 'settings.isPushNotification': true }, { _id: 0, pushSubscriptions: 1 });
+});
+
 // new Promise((resolve, reject) => connectToDb(db => db.collection(COLLECTION_USER).find({ username: query.userName }).next((err, result) => resolve(!result))));

@@ -98,4 +98,24 @@ describe('fetchAllUserList', () => {
 
     await expect(User.fetchOneUser('5b182e9138dbb7258cc39546')).rejects.toEqual(true);
   });
+
+  test('fetchUsersPushSubscriptions', async () => {
+    const { promiseFindResult } = require('../../src/MongoDBHelper');
+    await User.fetchUsersPushSubscriptions(['5b182e9138dbb7258cc39546', '5b182e9138dbb7258cc39547']);
+
+    expect(promiseFindResult).toHaveBeenCalledTimes(2);
+    expect(mockCollection).toHaveBeenCalledTimes(4);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_USER);
+    expect(mockFind).toHaveBeenCalledTimes(3);
+    expect(mockFind).toHaveBeenLastCalledWith(
+      {
+        _id: { $in: [new ObjectId('5b182e9138dbb7258cc39546'), new ObjectId('5b182e9138dbb7258cc39547')] },
+        'settings.isPushNotification': true,
+      },
+      {
+        _id: 0,
+        pushSubscriptions: 1,
+      },
+    );
+  });
 });
