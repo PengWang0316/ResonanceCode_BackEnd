@@ -187,6 +187,22 @@ describe('Reading Model', () => {
     );
   });
 
+  test('createJournal', () => {
+    const { promiseInsertResult } = require('../../src/MongoDBHelper');
+    Reading.createJournal({
+      date: '2018/03/16',
+      readings: {
+        '5b182e9138dbb7258cc39546': true,
+        '5b182e9138dbb7258cc39545': true,
+      },
+    });
+
+    expect(promiseInsertResult).toHaveBeenCalledTimes(3);
+    expect(mockCollection).toHaveBeenCalledTimes(8);
+    expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(mockUpdate).toHaveBeenCalledTimes(2);
+  });
+
   // test('fetchReadingsByHexagramId, with user id', async () => {
   //   const { getDB } = require('../../src/MongoDBHelper');
   //   await Reading.fetchReadingsByHexagramId('imageArray', 'userId');

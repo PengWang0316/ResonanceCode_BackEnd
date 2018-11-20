@@ -1,10 +1,14 @@
+import sinon from 'sinon';
 import { ObjectId } from 'mongodb';
 
 import Journal from '../../src/models/Journal';
 
 const mockDeleteOne = jest.fn();
 const mockFind = jest.fn();
-const mockCollection = jest.fn().mockReturnValue({ deleteOne: mockDeleteOne, find: mockFind });
+const mockInsert = jest.fn();
+const mockCollection = jest.fn().mockReturnValue({
+  deleteOne: mockDeleteOne, find: mockFind, insert: mockInsert,
+});
 jest.mock('../../src/MongoDBHelper', () => ({
   promiseInsertResult: jest.fn().mockImplementation(callback => callback({
     collection: mockCollection,
@@ -49,5 +53,23 @@ describe('Journal Model', () => {
     expect(mockCollection).toHaveBeenLastCalledWith('journal_entries');
     expect(mockFind).toHaveBeenCalledTimes(2);
     expect(mockFind).toHaveBeenLastCalledWith({ user_id: 'userId' });
+  });
+
+  test('createJournal', () => {
+    // const timer = sinon.useFakeTimers();
+    const { promiseInsertResult } = require('../../src/MongoDBHelper');
+    Journal.createJournal({ journal: 'journal', readings: [], date: '2018/03/16' });
+
+    expect(promiseInsertResult).toHaveBeenCalledTimes(2);
+    expect(mockCollection).toHaveBeenCalledTimes(4);
+    expect(mockCollection).toHaveBeenLastCalledWith('journal_entries');
+    expect(mockInsert).toHaveBeenCalledTimes(1);
+    // expect(mockInsert).lastCalledWith.length.toBe(3);
+    // .toHaveBeenLastCalledWith({
+    //   journal: 'journal',
+    //   _id: new ObjectId(),
+    //   date: new Date('2018/03/16'),
+    // });
+    // timer.restore();
   });
 });

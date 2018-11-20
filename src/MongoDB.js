@@ -429,34 +429,35 @@ exports.deleteReading = (readingId, userId, callback) => {
 }; */
 
 /*  Create a new journal  */
-exports.createJournal = (journal) => new Promise((resolve, reject) => {
-  const internalJournal = Object.assign({}, journal); // Using a copy to work.
-  internalJournal.date = new Date(internalJournal.date);
-  internalJournal._id = new mongodb.ObjectId();
+// Moved to the Reading and Journal models.
+// exports.createJournal = (journal) => new Promise((resolve, reject) => {
+//   const internalJournal = Object.assign({}, journal); // Using a copy to work.
+//   internalJournal.date = new Date(internalJournal.date);
+//   internalJournal._id = new mongodb.ObjectId();
 
-  /* If no reading has been attached, create this journal to journal_entries collection. Otherwise push journal to reading collections */
-  if (Object.keys(internalJournal.readings).length === 0) {
-    delete internalJournal.readings;
-    connectToDb(db =>
-      db.collection(COLLECTION_JOURNAL_ENTRIES)
-        .insert(internalJournal).then(result => resolve()).catch(err => reject(err)));
-  } else {
-    const readingObjectIdArray = [];
-    Object.keys(internalJournal.readings).forEach((element) => {
-      readingObjectIdArray.push(new mongodb.ObjectId(element));
-    });
-    // let readings = Object.assign({}, journal.readings);
-    internalJournal.pingPongStates = internalJournal.readings; // Changing the name to poingPongStates
-    delete internalJournal.readings;
-    connectToDb((db) => {
-      db.collection(COLLECTION_READINGS).update({ _id: { $in: readingObjectIdArray } }, {
-        $push: {
-          journal_entries: internalJournal
-        }
-      }, { multi: true }).then((result) => resolve()).catch(err => reject(err));
-    });
-  }
-});
+//   /* If no reading has been attached, create this journal to journal_entries collection. Otherwise push journal to reading collections */
+//   if (Object.keys(internalJournal.readings).length === 0) {
+//     delete internalJournal.readings;
+//     connectToDb(db =>
+//       db.collection(COLLECTION_JOURNAL_ENTRIES)
+//         .insert(internalJournal).then(result => resolve()).catch(err => reject(err)));
+//   } else {
+//     const readingObjectIdArray = [];
+//     Object.keys(internalJournal.readings).forEach((element) => {
+//       readingObjectIdArray.push(new mongodb.ObjectId(element));
+//     });
+//     // let readings = Object.assign({}, journal.readings);
+//     internalJournal.pingPongStates = internalJournal.readings; // Changing the name to poingPongStates
+//     delete internalJournal.readings;
+//     connectToDb((db) => {
+//       db.collection(COLLECTION_READINGS).update({ _id: { $in: readingObjectIdArray } }, {
+//         $push: {
+//           journal_entries: internalJournal
+//         }
+//       }, { multi: true }).then((result) => resolve()).catch(err => reject(err));
+//     });
+//   }
+// });
 
 /*  Get Journal list  */
 // Moved to the Reading model.
