@@ -20,18 +20,18 @@ const { NORMAL_ROLE } = process.env;
 const mongodb = require('../MongoDB');
 
 // Functions import
-const putJournal = require('./functions/PutJournal');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
-const updateHexagram = require('../controllers/UpdateHexagram');
 const getJournal = require('../controllers/FetchJournal');
+const updateJournal = require('../controllers/UpdateJournal');
 const createReading = require('../controllers/CreateReading');
 const createJournal = require('../controllers/CreateJournal');
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
 const fetchReadings = require('../controllers/FetchReadings');
 const deleteJournal = require('../controllers/DeleteJournal');
+const updateHexagram = require('../controllers/UpdateHexagram');
 const fetchHexagrams = require('../controllers/FetchHexagrams');
 const searchReadings = require('../controllers/SearchReadings');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
@@ -81,7 +81,7 @@ normalRouter.post('/reading', createReading);
 normalRouter.post('/journal', createJournal);
 
 /** ******************** Update a journal  *************************** */
-normalRouter.put('/journal', putJournal);
+normalRouter.put('/journal', updateJournal);
 
 /** ******************** Update a hexagram  *************************** */
 normalRouter.put('/hexagram', updateHexagram);

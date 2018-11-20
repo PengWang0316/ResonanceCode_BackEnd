@@ -1,4 +1,4 @@
-import putJournal from '../../src/routers/functions/PutJournal';
+import putJournal from '../../src/controllers/UpdateJournal';
 
 jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id' }));
