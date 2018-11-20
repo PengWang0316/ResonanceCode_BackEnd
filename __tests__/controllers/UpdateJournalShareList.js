@@ -1,8 +1,9 @@
-import putUpdateJournalShareList from '../../src/routers/functions/PutUpdateJournalShareList';
+import putUpdateJournalShareList from '../../src/controllers/UpdateJournalShareList';
 
 jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id', role: 1 }));
-jest.mock('../../src/MongoDB', () => ({ updateJournalShareList: jest.fn().mockReturnValue(Promise.resolve()), fetchUsersPushSubscriptions: jest.fn().mockReturnValue(Promise.resolve()) }));
+jest.mock('../../src/models/Reading', () => ({ updateJournalShareList: jest.fn().mockReturnValue(Promise.resolve()) }));
+jest.mock('../../src/models/User', () => ({ fetchUsersPushSubscriptions: jest.fn().mockReturnValue(Promise.resolve()) }));
 jest.mock('../../src/utils/PushNotification', () => jest.fn());
 
 describe('PutUpdateJournalShareList', () => {
@@ -13,9 +14,10 @@ describe('PutUpdateJournalShareList', () => {
     const req = {
       body: {
         journalId: 'journalId', readingId: 'readingId', shareList: [{ id: 1 }, { id: 2 }, { id: 4 }], existedShareList: [1, 2, 3]
-      }
+      },
     };
-    const { updateJournalShareList, fetchUsersPushSubscriptions } = require('../../src/MongoDB');
+    const { updateJournalShareList } = require('../../src/models/Reading');
+    const { fetchUsersPushSubscriptions } = require('../../src/models/User');
     const { error } = require('../../src/utils/Logger');
     const pushNotification = require('../../src/utils/PushNotification');
 
@@ -40,9 +42,10 @@ describe('PutUpdateJournalShareList', () => {
     const req = {
       body: {
         journalId: 'journalId', readingId: 'readingId', shareList: [{ id: 1 }, { id: 2 }, { id: 4 }], existedShareList: [1, 2, 3]
-      }
+      },
     };
-    const { updateJournalShareList, fetchUsersPushSubscriptions } = require('../../src/MongoDB');
+    const { updateJournalShareList } = require('../../src/models/Reading');
+    const { fetchUsersPushSubscriptions } = require('../../src/models/User');
     fetchUsersPushSubscriptions.mockReturnValue(Promise.reject());
     const { error } = require('../../src/utils/Logger');
     const pushNotification = require('../../src/utils/PushNotification');
@@ -68,9 +71,10 @@ describe('PutUpdateJournalShareList', () => {
     const req = {
       body: {
         journalId: 'journalId', readingId: 'readingId', shareList: [{ id: 1 }, { id: 2 }, { id: 4 }], existedShareList: [1, 2, 3]
-      }
+      },
     };
-    const { updateJournalShareList, fetchUsersPushSubscriptions } = require('../../src/MongoDB');
+    const { updateJournalShareList } = require('../../src/models/Reading');
+    const { fetchUsersPushSubscriptions } = require('../../src/models/User');
     updateJournalShareList.mockReturnValue(Promise.reject());
     fetchUsersPushSubscriptions.mockReturnValue(Promise.resolve());
     const { error } = require('../../src/utils/Logger');

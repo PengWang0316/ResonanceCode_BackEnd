@@ -21,7 +21,6 @@ const mongodb = require('../MongoDB');
 
 // Functions import
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
-const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
 const getJournal = require('../controllers/FetchJournal');
 const updateJournal = require('../controllers/UpdateJournal');
@@ -41,6 +40,7 @@ const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
 const isUserNameAvailable = require('../controllers/IsUserNameAvailable');
 const fetchJwtMessageVerify = require('../controllers/FetchJwtMessageVerify');
+const updateJournalShareList = require('../controllers/UpdateJournalSharßeList');
 const fetchUnattchedJournals = require('../controllers/FetchUnattachedJournals');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
@@ -161,7 +161,7 @@ normalRouter.get('/fetchUsersAmount', fetchUsersAmount);
 normalRouter.get('/fetchAllUserList', fetchAllUserList);
 
 /* Updating the share list for a reading's journal. */
-normalRouter.put('/updateJournalShareList', putUpdateJournalShareList);
+normalRouter.put('/updateJournalShareList', updateJournalShareList);
 
 const eliminateUnnecessaryJournal = ({ readings, userId }) => {
   // const newReadings = { ...readings };
