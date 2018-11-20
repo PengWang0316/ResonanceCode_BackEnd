@@ -7,7 +7,7 @@ const pdfmake = require('pdfmake/build/pdfmake');
 const pdfFonts = require('pdfmake/build/vfs_fonts.js');
 const cloudinary = require('cloudinary');
 
-const getDateString = require('../Util').getDateString;
+const { getDateString } = require('../Util');
 const verifyJWT = require('../utils/VerifyJWT');
 const logger = require('../utils/Logger');
 
@@ -16,36 +16,36 @@ pdfmake.vfs = pdfFonts.pdfMake.vfs; // Setting the default font for pdfMake liba
 require('dotenv').config(); // Loading .env to process.env
 // const USERNAME = 'resonancecode_webuser';
 // const PASSWORD = 'cyJz2b4vGb3EgHRf0Khq'; // username
-const { ADMINISTRATOR_ROLE, ADVANCE_ROLE, NORMAL_ROLE } = process.env;
+const { NORMAL_ROLE } = process.env;
 const mongodb = require('../MongoDB');
 
 // Functions import
-const getJwtMessageVerify = require('./functions/GetJwtMessageVerify');
-const postReading = require('./functions/PostReading');
-const postJournal = require('./functions/PostJournal');
-const putJournal = require('./functions/PutJournal');
-const putHexagram = require('./functions/PutHexagram');
-const getFetchReadings = require('./functions/GetFetchReadings');
-const getFetchJournals = require('./functions/GetFetchJournals');
-const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
-const getJournal = require('./functions/GetJournal');
-const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
-const getFetchAllHexagrams = require('./functions/GetFetchAllHexagrams');
-const getFetchHexagrams = require('./functions/GetFetchHexagrams');
-const getFetchHexagramBasedOnImg = require('./functions/GetFetchHexagramBasedOnImg');
-const getFetchReadingsBaseOnHexagram = require('./functions/GetFetchReadingsBaseOnHexagram');
-const getSearchReadings = require('./functions/GetSearchReadings');
-const getFetchAllReadingList = require('./functions/GetFetchAllReadingList');
-const getFetchReadingsBasedOnName = require('./functions/GetFetchReadingsBasedOnName');
-const deleteDeleteReading = require('./functions/DeleteDeleteReading');
-const postDeleteJournal = require('./functions/PostDeleteJournal');
-const deleteDeleteUnattachedJournal = require('./functions/DeleteDeleteUnattachedJournal');
-const getIsUserNameAvailable = require('./functions/GetIsUserNameAvailable');
-const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
-const getFetchReadingsAmount = require('./functions/GetFetchReadingsAmount');
-const getFetchUsersAmount = require('./functions/GetFetchUsersAmount');
-const getFetchAllUserList = require('./functions/GetFetchAllUserList');
-const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
+const getJournal = require('../controllers/FetchJournal');
+const updateJournal = require('../controllers/UpdateJournal');
+const createReading = require('../controllers/CreateReading');
+const createJournal = require('../controllers/CreateJournal');
+const deleteReading = require('../controllers/DeleteReading');
+const fetchJournals = require('../controllers/FetchJournals');
+const fetchReadings = require('../controllers/FetchReadings');
+const deleteJournal = require('../controllers/DeleteJournal');
+const updateHexagram = require('../controllers/UpdateHexagram');
+const fetchHexagrams = require('../controllers/FetchHexagrams');
+const searchReadings = require('../controllers/SearchReadings');
+const fetchAllUserList = require('../controllers/FetchAllUserList');
+const fetchUsersAmount = require('../controllers/FetchUsersAmount');
+const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
+const fetchAllReadingList = require('../controllers/FetchAllReadingList');
+const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
+const isUserNameAvailable = require('../controllers/IsUserNameAvailable');
+const fetchJwtMessageVerify = require('../controllers/FetchJwtMessageVerify');
+const updateSettingCoinMode = require('../controllers/UpdateSettingCoinMode');
+const updateJournalShareList = require('../controllers/UpdateJournalShareList');
+const fetchUnattchedJournals = require('../controllers/FetchUnattachedJournals');
+const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
+const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
+const fetchReadingsBasedOnName = require('../controllers/FetchReadingsBasedOnName');
+const fetchReadingsBasedOnHexagram = require('../controllers/FetchReadingsBasedOnHexagram');
+const fetchJournalBaseOnJournalReading = require('../controllers/FetchJournalBaseOnJournalReading');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -54,7 +54,7 @@ const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList
 cloudinary.config({ // confige the cloudinary library.
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 /** Setting up webpush */
@@ -71,67 +71,67 @@ cloudinary.config({ // confige the cloudinary library.
 // });
 
 /* Checking jwt token */
-normalRouter.get('/jwtMessageVerify', getJwtMessageVerify);
+normalRouter.get('/jwtMessageVerify', fetchJwtMessageVerify);
 
 /** ********************  Create a new reading  *************************** */
-normalRouter.post('/reading', postReading);
+normalRouter.post('/reading', createReading);
 
 /** ********************  Create a new journal  *************************** */
-normalRouter.post('/journal', postJournal);
+normalRouter.post('/journal', createJournal);
 
 /** ******************** Update a journal  *************************** */
-normalRouter.put('/journal', putJournal);
+normalRouter.put('/journal', updateJournal);
 
 /** ******************** Update a hexagram  *************************** */
-normalRouter.put('/hexagram', putHexagram);
+normalRouter.put('/hexagram', updateHexagram);
 
 /** fetch readings */
-normalRouter.get('/fetchReadings', getFetchReadings);
+normalRouter.get('/fetchReadings', fetchReadings);
 
 /* Getting journals list */
-normalRouter.get('/fetchJournals', getFetchJournals);
+normalRouter.get('/fetchJournals', fetchJournals);
 
 /** Getting unattached journals list */
-normalRouter.get('/fetchUnattachedJournals', getFetchUnattchedJournals);
+normalRouter.get('/fetchUnattachedJournals', fetchUnattchedJournals);
 
 /** *************  Getting one journal  ******************** */
 normalRouter.get('/journal', getJournal);
 
 /** Fetch a journal based on both reading and journal's id */
-normalRouter.get('/journalBasedOnJournalReading', getJournalBaseOnJournalReading);
+normalRouter.get('/journalBasedOnJournalReading', fetchJournalBaseOnJournalReading);
 
 /** *************  Getting hexagrams  ******************** */
-normalRouter.get('/fetchHexagrams', getFetchHexagrams);
+normalRouter.get('/fetchHexagrams', fetchHexagrams);
 
 /** *************  Getting all hexagrams  ******************** */
-normalRouter.get('/fetchAllHexagrams', getFetchAllHexagrams);
+normalRouter.get('/fetchAllHexagrams', fetchAllHexagrams);
 
 /** Fetching one hexagram */
-normalRouter.get('/fetchHexagramBasedOnImg', getFetchHexagramBasedOnImg);
+normalRouter.get('/fetchHexagramBasedOnImg', FetchHexagramBasedOnImg);
 
 /** *************  Getting readings by hexagram's id  ******************** */
-normalRouter.get('/fetchReadingsBaseOnHexagram', getFetchReadingsBaseOnHexagram);
+normalRouter.get('/fetchReadingsBaseOnHexagram', fetchReadingsBasedOnHexagram);
 
 /** *********  Fetching readings by searching criterias ************ */
-normalRouter.get('/searchReadings', getSearchReadings);
+normalRouter.get('/searchReadings', searchReadings);
 
 /** Fetching the reading list */
-normalRouter.get('/fetchAllReadingList', getFetchAllReadingList);
+normalRouter.get('/fetchAllReadingList', fetchAllReadingList);
 
 /** ****************  Getting reading by searching name   ********************* */
-normalRouter.get('/fetchReadingsBasedOnName', getFetchReadingsBasedOnName);
+normalRouter.get('/fetchReadingsBasedOnName', fetchReadingsBasedOnName);
 
 /** ***************  Delete reading  ***************************** */
-normalRouter.delete('/deleteReading', deleteDeleteReading);
+normalRouter.delete('/deleteReading', deleteReading);
 
 /** *****************  Delete one journal   ************************ */
-normalRouter.post('/deleteJournal', postDeleteJournal);
+normalRouter.post('/deleteJournal', deleteJournal);
 
 /** Delete one unattached journal */
-normalRouter.delete('/deleteUnAttachedJournal', deleteDeleteUnattachedJournal);
+normalRouter.delete('/deleteUnAttachedJournal', deleteUnattachedJournal);
 
 /** Check whether user name is available */
-normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
+normalRouter.get('/isUserNameAvailable', isUserNameAvailable);
 
 // TODO: Should be removed eventually. Has already been moved to utils/GetReturnUserObject.js
 /** Get information from database's return and sign the user Object with jwt.
@@ -140,7 +140,7 @@ normalRouter.get('/isUserNameAvailable', getIsUserNameAvailable);
 */
 const getReturnUserObject = user => {
   const returnUser = Object.assign({
-    isAuth: true, role: user.role || NORMAL_ROLE
+    isAuth: true, role: user.role || NORMAL_ROLE,
   }, user);
   return { jwt: jwt.sign(returnUser, process.env.JWT_SECERT), user: returnUser };
 };
@@ -148,19 +148,19 @@ const getReturnUserObject = user => {
 /** Changing a user's default hexagram choosing mode.
   * After update the database, resign the jwt and send back the user object for redux and jwtMessage to localstorage.
 */
-normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
+normalRouter.put('/updateSettingCoinMode', updateSettingCoinMode);
 
 /* Fetch how many reading a user has */
-normalRouter.get('/fetchReadingsAmount', getFetchReadingsAmount);
+normalRouter.get('/fetchReadingsAmount', fetchReadingsAmount);
 
 /* Fetch the total number of users */
-normalRouter.get('/fetchUsersAmount', getFetchUsersAmount);
+normalRouter.get('/fetchUsersAmount', fetchUsersAmount);
 
 /* Fetch user names based on the page number */
-normalRouter.get('/fetchAllUserList', getFetchAllUserList);
+normalRouter.get('/fetchAllUserList', fetchAllUserList);
 
 /* Updating the share list for a reading's journal. */
-normalRouter.put('/updateJournalShareList', putUpdateJournalShareList);
+normalRouter.put('/updateJournalShareList', updateJournalShareList);
 
 const eliminateUnnecessaryJournal = ({ readings, userId }) => {
   // const newReadings = { ...readings };
@@ -168,8 +168,7 @@ const eliminateUnnecessaryJournal = ({ readings, userId }) => {
     const newReading = Object.assign({}, reading);
     newReading.journal_entries = newReading.journal_entries.filter(journal => {
       let isReturn = false;
-      if (journal.shareList)
-        journal.shareList.forEach(shareInfo => { if (shareInfo.id === userId) isReturn = true; });
+      if (journal.shareList) journal.shareList.forEach(shareInfo => { if (shareInfo.id === userId) isReturn = true; });
       return isReturn;
     });
     return newReading;
@@ -183,7 +182,7 @@ normalRouter.get('/fetchSharedReadings', (req, res) => {
   mongodb.fetchSharedReadings({
     userId: user._id,
     pageNumber: req.query.pageNumber,
-    numberPerpage: req.query.numberPerpage
+    numberPerpage: req.query.numberPerpage,
   }).then(result => {
     if (result.length === 0) res.json(result);
     else res.json(eliminateUnnecessaryJournal({ readings: result, userId: user._id }));
@@ -246,11 +245,11 @@ const getPdfDocDefinition = ({ readingDataUrl, journals, readingId }) => {
     header: {
       columns: [{
         text: 'Generated by kairoScope (kairoscope.resonance-code.com)', alignment: 'right', margin: [0, 12, 10, 0], fontSize: 9
-      }]
+      }],
     },
     content: [
       { image: readingDataUrl, width: 550 }
-    ]
+    ],
   };
   const keyExpression = /(.*)-\d+$/; // Using this to pick up the content field
   // Start to pull out all journal
@@ -296,7 +295,7 @@ normalRouter.post('/outputPdfBasedOnId', (req, res) => {
   mongodb.fetchReadingBasedOnId({ readingId, userId: user._id })
     .then(reading => {
       const pdfDocGenerator = pdfmake.createPdf(getPdfDocDefinition({
-        readingId, readingDataUrl, journals: reading.journal_entries
+        readingId, readingDataUrl, journals: reading.journal_entries,
       }));
       pdfDocGenerator.getDataUrl(data => res.end(data));
     })
@@ -313,7 +312,7 @@ normalRouter.delete('/deleteUploadImages', (req, res) => {
 /* Update user's userGroups */
 normalRouter.put('/updateUserGroup', (req, res) => {
   const {
-    jwtMessage, newGroupName, oldGroupName, userList, isUpdate
+    jwtMessage, newGroupName, oldGroupName, userList, isUpdate,
   } = req.body;
   const userId = verifyJWT({ message: jwtMessage, res })._id;
   const user = { [`settings.userGroups.${newGroupName}`]: userList };
@@ -333,8 +332,9 @@ normalRouter.delete('/deleteUserGroup', (req, res) => {
 /* Save the new custom name for a user */
 normalRouter.put('/saveCustomName', (req, res) => {
   const userId = verifyJWT({ message: req.body.jwtMessage, res })._id;
-  const customName = req.body.customName.length > 20 ?
-    req.body.customName.slice(0, 20) : req.body.customName; // If customName longer than 20, just get the first 20 characters.
+  const customName = req.body.customName.length > 20
+    ? req.body.customName.slice(0, 20)
+    : req.body.customName; // If customName longer than 20, just get the first 20 characters.
   mongodb.updateUser(userId, { 'settings.customName': customName }).then(result => res.json({ isAuth: true, ...result.value }));
 });
 
