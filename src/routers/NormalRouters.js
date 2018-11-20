@@ -21,12 +21,12 @@ const mongodb = require('../MongoDB');
 
 // Functions import
 const postReading = require('./functions/PostReading');
-const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
+const postJournal = require('../controllers/PostJournal');
 const getJournal = require('../controllers/FetchJournal');
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
