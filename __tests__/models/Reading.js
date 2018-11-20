@@ -31,6 +31,7 @@ jest.mock('../../src/MongoDBHelper', () => ({
   })),
   getDB: jest.fn().mockReturnValue({
     collection: jest.fn().mockReturnValue({
+      insert: jest.fn().mockImplementation((reading, callback) => callback(null, { ops: ['result'] })),
       find: jest.fn().mockReturnValue({
         toArray: jest.fn().mockImplementation(callback => callback(null, mockReturnReading)),
       }),
@@ -201,6 +202,22 @@ describe('Reading Model', () => {
     expect(mockCollection).toHaveBeenCalledTimes(8);
     expect(mockCollection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
     expect(mockUpdate).toHaveBeenCalledTimes(2);
+  });
+
+  test('createReading', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    await expect(Reading.createReading({})).resolves.toBe('result');
+
+    expect(getDB).toHaveBeenCalledTimes(14);
+    expect(getDB().collection).toHaveBeenCalledTimes(9);
+    expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(getDB().collection().insert).toHaveBeenCalledTimes(1);
+  });
+
+  test('createReading with error', async () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    getDB().collection().insert.mockImplementationOnce((reading, callback) => callback(true, { ops: ['result'] }));
+    await expect(Reading.createReading({})).rejects.toBe(true);
   });
 
   // test('fetchReadingsByHexagramId, with user id', async () => {

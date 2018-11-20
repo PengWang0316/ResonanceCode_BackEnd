@@ -167,10 +167,11 @@ exports.getUser = (username, password, callback) => {
   });
 };
 
-/*  Create a new Reading  */
-exports.createReading = reading => new Promise((resolve, reject) =>
-  connectToDb(db => db.collection(COLLECTION_READINGS)
-    .insert(reading, (err, response) => resolve(response.ops[0]))));
+// /*  Create a new Reading  */
+// Moved to the Reading model.
+// exports.createReading = reading => new Promise((resolve, reject) =>
+//   connectToDb(db => db.collection(COLLECTION_READINGS)
+//     .insert(reading, (err, response) => resolve(response.ops[0]))));
 
 // /* Working with method below to execute the callback function when all hexagram are fetched. */
 // Moved to the Reading model

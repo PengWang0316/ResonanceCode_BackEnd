@@ -66,7 +66,7 @@ exports.createJournal = journal => promiseInsertResult(db => {
   internalJournal._id = new ObjectId();
 
   const readingObjectIdArray = [];
-  Object.keys(internalJournal.readings).forEach((element) => {
+  Object.keys(internalJournal.readings).forEach(element => {
     readingObjectIdArray.push(new ObjectId(element));
   });
   // let readings = Object.assign({}, journal.readings);
@@ -76,6 +76,14 @@ exports.createJournal = journal => promiseInsertResult(db => {
     $push: { journal_entries: internalJournal },
   }, { multi: true });
 });
+
+/* Create a new Reading */
+exports.createReading = reading => new Promise((resolve, reject) => getDB()
+  .collection(COLLECTION_READINGS)
+  .insert(reading, (err, response) => {
+    if (err) reject(err);
+    resolve(response.ops[0]);
+  }));
 
 /* ************  The code below is not tested since it will be refactored with Redux to improve the performence. ************** */
 /* Working with method below to execute the callback function when all hexagram are fetched. */
