@@ -1,4 +1,4 @@
-import postJournal from '../../src/controllers/PostJournal';
+import postJournal from '../../src/controllers/CreateJournal';
 
 jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id' }));

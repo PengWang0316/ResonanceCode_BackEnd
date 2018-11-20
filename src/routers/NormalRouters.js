@@ -26,7 +26,7 @@ const putHexagram = require('./functions/PutHexagram');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
-const postJournal = require('../controllers/PostJournal');
+const createJournal = require('../controllers/CreateJournal');
 const getJournal = require('../controllers/FetchJournal');
 const deleteReading = require('../controllers/DeleteReading');
 const fetchJournals = require('../controllers/FetchJournals');
@@ -78,7 +78,7 @@ normalRouter.get('/jwtMessageVerify', fetchJwtMessageVerify);
 normalRouter.post('/reading', postReading);
 
 /** ********************  Create a new journal  *************************** */
-normalRouter.post('/journal', postJournal);
+normalRouter.post('/journal', createJournal);
 
 /** ******************** Update a journal  *************************** */
 normalRouter.put('/journal', putJournal);
