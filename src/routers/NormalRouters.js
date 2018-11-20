@@ -24,7 +24,6 @@ const postReading = require('./functions/PostReading');
 const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
-const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
@@ -38,10 +37,11 @@ const searchReadings = require('../controllers/SearchReadings');
 const fetchAllUserList = require('../controllers/FetchAllUserList');
 const fetchUsersAmount = require('../controllers/FetchUsersAmount');
 const fetchAllHexagrams = require('../controllers/FetchAllHexagrams');
-const fetchJwtMessageVerify = require('../controllers/FetchJwtMessageVerify');
 const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
 const isUserNameAvailable = require('../controllers/IsUserNameAvailable');
+const fetchJwtMessageVerify = require('../controllers/FetchJwtMessageVerify');
+const fetchUnattchedJournals = require('../controllers/FetchUnattachedJournals');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
 const fetchReadingsBasedOnName = require('../controllers/FetchReadingsBasedOnName');
@@ -93,7 +93,7 @@ normalRouter.get('/fetchReadings', fetchReadings);
 normalRouter.get('/fetchJournals', fetchJournals);
 
 /** Getting unattached journals list */
-normalRouter.get('/fetchUnattachedJournals', getFetchUnattchedJournals);
+normalRouter.get('/fetchUnattachedJournals', fetchUnattchedJournals);
 
 /** *************  Getting one journal  ******************** */
 normalRouter.get('/journal', getJournal);
