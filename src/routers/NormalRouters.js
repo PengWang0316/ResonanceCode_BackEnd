@@ -20,8 +20,6 @@ const { NORMAL_ROLE } = process.env;
 const mongodb = require('../MongoDB');
 
 // Functions import
-const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
-
 const getJournal = require('../controllers/FetchJournal');
 const updateJournal = require('../controllers/UpdateJournal');
 const createReading = require('../controllers/CreateReading');
@@ -40,7 +38,8 @@ const fetchAllReadingList = require('../controllers/FetchAllReadingList');
 const fetchReadingsAmount = require('../controllers/FetchReadingsAmount');
 const isUserNameAvailable = require('../controllers/IsUserNameAvailable');
 const fetchJwtMessageVerify = require('../controllers/FetchJwtMessageVerify');
-const updateJournalShareList = require('../controllers/UpdateJournalSharßeList');
+const updateSettingCoinMode = require('../controllers/UpdateSettingCoinMode');
+const updateJournalShareList = require('../controllers/UpdateJournalShareList');
 const fetchUnattchedJournals = require('../controllers/FetchUnattachedJournals');
 const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal');
 const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
@@ -149,7 +148,7 @@ const getReturnUserObject = user => {
 /** Changing a user's default hexagram choosing mode.
   * After update the database, resign the jwt and send back the user object for redux and jwtMessage to localstorage.
 */
-normalRouter.put('/updateSettingCoinMode', putUpdateSettingCoinMode);
+normalRouter.put('/updateSettingCoinMode', updateSettingCoinMode);
 
 /* Fetch how many reading a user has */
 normalRouter.get('/fetchReadingsAmount', fetchReadingsAmount);
