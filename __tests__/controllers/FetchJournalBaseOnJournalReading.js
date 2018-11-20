@@ -1,18 +1,18 @@
-import getJournalBaseOnJournalReading from '../../src/routers/functions/GetJournalBaseOnJournalReading';
+import fetchJournalBaseOnJournalReadingController from '../../src/controllers/FetchJournalBaseOnJournalReading';
 
 jest.mock('../../src/utils/Logger', () => ({ error: jest.fn() }));
 jest.mock('../../src/utils/VerifyJWT', () => jest.fn().mockReturnValue({ _id: 'id', role: 1 }));
-jest.mock('../../src/MongoDB', () => ({ fetchJournalBasedOnReadingJournal: jest.fn().mockReturnValue(Promise.resolve()) }));
+jest.mock('../../src/models/Reading', () => ({ fetchJournalBasedOnReadingJournal: jest.fn().mockReturnValue(Promise.resolve()) }));
 
-describe('GetJournalBaseOnJournalReading', () => {
-  test('getJournalBaseOnJournalReading without error', async () => {
+describe('FetchJournalBaseOnJournalReading', () => {
+  test('fetchJournalBaseOnJournalReading without error', async () => {
     const mockJsonFn = jest.fn();
     const res = { json: mockJsonFn };
     const req = { query: { jwtMessage: 'message', journalId: 'journalId', readingId: 'readingId' } };
     const verifyJWT = require('../../src/utils/VerifyJWT');
-    const { fetchJournalBasedOnReadingJournal } = require('../../src/MongoDB');
+    const { fetchJournalBasedOnReadingJournal } = require('../../src/models/Reading');
 
-    await getJournalBaseOnJournalReading(req, res);
+    await fetchJournalBaseOnJournalReadingController(req, res);
 
     expect(verifyJWT).toHaveBeenCalledTimes(1);
     expect(verifyJWT).toHaveBeenLastCalledWith({ message: 'message', res });
@@ -21,21 +21,23 @@ describe('GetJournalBaseOnJournalReading', () => {
     expect(mockJsonFn).toHaveBeenCalledTimes(1);
   });
 
-  test('getJournalBaseOnJournalReading with error', async () => {
+  test('fetchJournalBaseOnJournalReading with error', async () => {
     const mockJsonFn = jest.fn();
-    const res = { json: mockJsonFn };
+    const mockEnd = jest.fn();
+    const res = { json: mockJsonFn, end: mockEnd };
     const req = { query: { jwtMessage: 'message', journalId: 'journalId', readingId: 'readingId' } };
     const verifyJWT = require('../../src/utils/VerifyJWT');
-    const { fetchJournalBasedOnReadingJournal } = require('../../src/MongoDB');
+    const { fetchJournalBasedOnReadingJournal } = require('../../src/models/Reading');
     const { error } = require('../../src/utils/Logger');
 
     fetchJournalBasedOnReadingJournal.mockReturnValue(Promise.reject());
 
-    await getJournalBaseOnJournalReading(req, res);
+    await fetchJournalBaseOnJournalReadingController(req, res);
 
     expect(verifyJWT).toHaveBeenCalledTimes(2);
     expect(verifyJWT).toHaveBeenLastCalledWith({ message: 'message', res });
     expect(fetchJournalBasedOnReadingJournal).toHaveBeenCalledTimes(2);
     expect(error).toHaveBeenCalledTimes(1);
+    expect(mockEnd).toHaveBeenCalledTimes(1);
   });
 });

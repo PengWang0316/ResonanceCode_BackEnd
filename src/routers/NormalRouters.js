@@ -26,7 +26,6 @@ const postJournal = require('./functions/PostJournal');
 const putJournal = require('./functions/PutJournal');
 const putHexagram = require('./functions/PutHexagram');
 const getFetchUnattchedJournals = require('./functions/GetUnattachedJournals');
-const getJournalBaseOnJournalReading = require('./functions/GetJournalBaseOnJournalReading');
 const getSearchReadings = require('./functions/GetSearchReadings');
 const postDeleteJournal = require('./functions/PostDeleteJournal');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
@@ -47,6 +46,7 @@ const deleteUnattachedJournal = require('../controllers/DeleteUnattachedJournal'
 const FetchHexagramBasedOnImg = require('../controllers/FetchHexagramBasedOnImg');
 const fetchReadingsBasedOnName = require('../controllers/FetchReadingsBasedOnName');
 const fetchReadingsBasedOnHexagram = require('../controllers/FetchReadingsBasedOnHexagram');
+const fetchJournalBaseOnJournalReading = require('../controllers/FetchJournalBaseOnJournalReading');
 // API_BASE_URL = "/"; Deprecated
 // const axios = require('axios');
 // const querystring = require('querystring');
@@ -99,7 +99,7 @@ normalRouter.get('/fetchUnattachedJournals', getFetchUnattchedJournals);
 normalRouter.get('/journal', getJournal);
 
 /** Fetch a journal based on both reading and journal's id */
-normalRouter.get('/journalBasedOnJournalReading', getJournalBaseOnJournalReading);
+normalRouter.get('/journalBasedOnJournalReading', fetchJournalBaseOnJournalReading);
 
 /** *************  Getting hexagrams  ******************** */
 normalRouter.get('/fetchHexagrams', fetchHexagrams);
