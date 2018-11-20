@@ -21,10 +21,10 @@ const mongodb = require('../MongoDB');
 
 // Functions import
 const putJournal = require('./functions/PutJournal');
-const putHexagram = require('./functions/PutHexagram');
 const putUpdateSettingCoinMode = require('./functions/PutUpdateSettingCoinMode');
 const putUpdateJournalShareList = require('./functions/PutUpdateJournalShareList');
 
+const updateHexagram = require('../controllers/UpdateHexagram');
 const getJournal = require('../controllers/FetchJournal');
 const createReading = require('../controllers/CreateReading');
 const createJournal = require('../controllers/CreateJournal');
@@ -84,7 +84,7 @@ normalRouter.post('/journal', createJournal);
 normalRouter.put('/journal', putJournal);
 
 /** ******************** Update a hexagram  *************************** */
-normalRouter.put('/hexagram', putHexagram);
+normalRouter.put('/hexagram', updateHexagram);
 
 /** fetch readings */
 normalRouter.get('/fetchReadings', fetchReadings);
