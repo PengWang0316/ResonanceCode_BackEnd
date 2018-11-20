@@ -783,23 +783,24 @@ exports.deleteUserGroup = ({ userId, groupName }) => promiseReturnResult(db =>
   * @param {object} An object that contains readingId, journalId, shareList, and userId information.
   * @return {null} No return.
 */
-exports.updateJournalShareList = ({
-  readingId, journalId, shareList, userId
-}) =>
-  connectToDb(db => {
-    db.collection(COLLECTION_READINGS)
-      .findOne({ _id: new mongodb.ObjectId(readingId), user_id: userId }).then(result => {
-        /** Finding the correct journal and update it. */
-        const reading = Object.assign({}, result);
-        reading.journal_entries = reading.journal_entries.map(journal => {
-          if (journal._id.toString() === journalId)
-            return Object.assign({}, journal, { shareList });
-          return journal;
-        });
-        /** Saving the reading with new journal's shareList back. */
-        connectToDb(newDb => newDb.collection(COLLECTION_READINGS).save(reading));
-      });
-  });
+// Moved to the Reading model.
+// exports.updateJournalShareList = ({
+//   readingId, journalId, shareList, userId
+// }) =>
+//   connectToDb(db => {
+//     db.collection(COLLECTION_READINGS)
+//       .findOne({ _id: new mongodb.ObjectId(readingId), user_id: userId }).then(result => {
+//         /** Finding the correct journal and update it. */
+//         const reading = Object.assign({}, result);
+//         reading.journal_entries = reading.journal_entries.map(journal => {
+//           if (journal._id.toString() === journalId)
+//             return Object.assign({}, journal, { shareList });
+//           return journal;
+//         });
+//         /** Saving the reading with new journal's shareList back. */
+//         connectToDb(newDb => newDb.collection(COLLECTION_READINGS).save(reading));
+//       });
+//   });
 
 /** Fetching all reading that have been shared with a user.
   * @param {string} userId is the id of the user who is shared with.
@@ -852,10 +853,11 @@ exports.fetctAllReadingWithJournalEntry = userId => promiseFindResult(db =>
   * @param {array} userIds is an array that contains users' ids.
   * @return {promise} Return a promise with users' information (just pushSubscription include).
 */
-exports.fetchUsersPushSubscriptions = userIds => promiseFindResult(db => {
-  const userIdsObject = userIds.map(id => new mongodb.ObjectId(id));
-  return db.collection(COLLECTION_USER).find({ _id: { $in: userIdsObject }, 'settings.isPushNotification': true }, { _id: 0, pushSubscriptions: 1 });
-});
+// Moved to the User model.
+// exports.fetchUsersPushSubscriptions = userIds => promiseFindResult(db => {
+//   const userIdsObject = userIds.map(id => new mongodb.ObjectId(id));
+//   return db.collection(COLLECTION_USER).find({ _id: { $in: userIdsObject }, 'settings.isPushNotification': true }, { _id: 0, pushSubscriptions: 1 });
+// });
 
 exports.fetchReadingBasedOnId = ({ readingId, userId }) => new Promise((resolve, reject) =>
   connectToDb(db => db.collection(COLLECTION_READINGS)

@@ -31,6 +31,7 @@ jest.mock('../../src/MongoDBHelper', () => ({
   })),
   getDB: jest.fn().mockReturnValue({
     collection: jest.fn().mockReturnValue({
+      save: jest.fn(),
       insert: jest.fn().mockImplementation((reading, callback) => callback(null, { ops: ['result'] })),
       find: jest.fn().mockReturnValue({
         toArray: jest.fn().mockImplementation(callback => callback(null, mockReturnReading)),
@@ -218,6 +219,31 @@ describe('Reading Model', () => {
     const { getDB } = require('../../src/MongoDBHelper');
     getDB().collection().insert.mockImplementationOnce((reading, callback) => callback(true, { ops: ['result'] }));
     await expect(Reading.createReading({})).rejects.toBe(true);
+  });
+
+  test('updateJournalShareList', () => {
+    const { getDB } = require('../../src/MongoDBHelper');
+    getDB().collection().findOne.mockReturnValueOnce({
+      then: jest.fn().mockImplementation(callback => callback({
+        journal_entries: [{ _id: 'id1' }, { _id: 'id2' }],
+      })),
+    });
+    Reading.updateJournalShareList({
+      readingId: '5b182e9138dbb7258cc39546', journalId: 'id1', shareList: 'shareList', userId: 'userId',
+    });
+
+    expect(getDB).toHaveBeenCalledTimes(22);
+    expect(getDB().collection).toHaveBeenCalledTimes(15);
+    expect(getDB().collection).toHaveBeenLastCalledWith(COLLECTION_READINGS);
+    expect(getDB().collection().findOne).toHaveBeenCalledTimes(3);
+    expect(getDB().collection().findOne).toHaveBeenLastCalledWith({
+      _id: new ObjectId('5b182e9138dbb7258cc39546'),
+      user_id: 'userId',
+    });
+    expect(getDB().collection().save).toHaveBeenCalledTimes(1);
+    expect(getDB().collection().save).toHaveBeenLastCalledWith({
+      journal_entries: [{ _id: 'id1', shareList: 'shareList' }, { _id: 'id2' }],
+    });
   });
 
   // test('fetchReadingsByHexagramId, with user id', async () => {

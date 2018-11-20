@@ -85,6 +85,24 @@ exports.createReading = reading => new Promise((resolve, reject) => getDB()
     resolve(response.ops[0]);
   }));
 
+/** Updating the shareList for a reading's journal.
+  * @param {object} An object that contains readingId, journalId, shareList, and userId information.
+  * @return {null} No return.
+*/
+exports.updateJournalShareList = ({
+  readingId, journalId, shareList, userId,
+}) => getDB().collection(COLLECTION_READINGS)
+  .findOne({ _id: new ObjectId(readingId), user_id: userId }).then(result => {
+    /** Finding the correct journal and update it. */
+    const reading = { ...result };
+    reading.journal_entries = reading.journal_entries.map(journal => {
+      if (journal._id.toString() === journalId) return Object.assign({}, journal, { shareList });
+      return journal;
+    });
+    /** Saving the reading with new journal's shareList back. */
+    getDB().collection(COLLECTION_READINGS).save(reading);
+  });
+
 /* ************  The code below is not tested since it will be refactored with Redux to improve the performence. ************** */
 /* Working with method below to execute the callback function when all hexagram are fetched. */
 const checkHexagramImageReadAndCallback = (checkNumber, targetNumber, callback, result) => {
