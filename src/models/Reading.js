@@ -202,7 +202,7 @@ function searchForReadings(query, callback, results) {
 }
 
 /*  Get search readings  */
-exports.getSearchReadings = query => new Promise((resolve, reject) => {
+exports.searchReadings = query => new Promise((resolve, reject) => {
   if (query.upperId !== 0 || query.lowerId !== 0
     || query.line13Id !== 0 || query.line25Id !== 0 || query.line46Id !== 0) {
     const queryObject = {};
