@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 // const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const winston = require('winston');
+const sanitize = require('mongo-sanitize');
 
 const mongodb = require('../MongoDB');
 
@@ -43,7 +44,7 @@ const signJWT = result => {
 };
 
 usernamePasswordRouters.get('/usernamePasswordLogin', (req, res) => {
-  mongodb.findUserWithUsername(req.query.username).then(result => {
+  mongodb.findUserWithUsername(sanitize(req.query.username)).then(result => {
     if (result.length === 0) res.json({ user: { isAuth: false, loginErr: true } });
     else {
       bcrypt.compare(req.query.password, result[0].password).then(compareResult => {
