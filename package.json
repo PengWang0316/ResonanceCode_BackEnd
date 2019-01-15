@@ -4,7 +4,8 @@
   "description": "The back-end code for Resonancecode",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "pm2-runtime app.js"
   },
   "babel": {
     "presets": [
