@@ -330,6 +330,7 @@ normalRouter.delete('/deleteUserGroup', (req, res) => {
 });
 
 /* Save the new custom name for a user */
+// Moved to Lambda
 normalRouter.put('/saveCustomName', (req, res) => {
   const userId = verifyJWT({ message: req.body.jwtMessage, res })._id;
   const customName = req.body.customName.length > 20
