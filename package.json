@@ -39,7 +39,7 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-google-oauth2": "^0.1.6",
-    "pdfmake": "^0.1.38",
+    "pdfmake": "^0.1.56",
     "querystring": "^0.2.0",
     "spdy": "^3.4.7",
     "web-push": "^3.3.3",
@@ -48,19 +48,19 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "eslint": "^5.7.0",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "sinon": "^7.1.1"
   }
 }
