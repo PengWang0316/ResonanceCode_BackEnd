@@ -22,7 +22,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "cloudinary": "^1.9.1",
